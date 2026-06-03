@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GK Estate">
+
+<title>Pre-Preparazione Estiva · Portieri</title>
+<meta name="description" content="Programma di pre-preparazione fisica estiva per portieri del settore giovanile. 2 settimane, 3 sedute a settimana, da svolgere in autonomia.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231a7a3c'/><text x='16' y='23' font-size='20' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>GK</text></svg>">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='22' fill='%231a7a3c'/%3E%3Ctext x='90' y='128' font-size='90' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EGK%3C/text%3E%3C/svg%3E">
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+:root {
+  --g:      #1a7a3c;
+  --gl:     #26a653;
+  --gd:     #1a5c30;
+  --gp:     #e8f5ee;
+  --acc:    #f5c518;
+  --dk:     #0d0d0d;
+  --wh:     #ffffff;
+  --gr:     #f4f4f4;
+  --gm:     #777;
+  --blue:   #3d6b9e;
+  --purple: #6b3d9e;
+  --r:      10px;
+  --max:    720px;
+  /* dark mode surfaces */
+  --body-bg:  #f0f4f1;
+  --border-c: #dde8dd;
+  --border-g: #e0e0e0;
+  --text-sec: #2a2a2a;
+}
+[data-theme="dark"] {
+  --gp:     #162d1c;
+  --dk:     #e8e8e8;
+  --wh:     #1e1e1e;
+  --gr:     #272727;
+  --gm:     #999;
+  --body-bg:  #111;
+  --border-c: #2a3d2a;
+  --border-g: #2e2e2e;
+  --text-sec: #bbb;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--body-bg);
+  color: var(--dk);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* --- OVERLAY NOME OBBLIGATORIO --- */
+#name-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(26, 122, 60, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.overlay-card {
+  background: var(--wh);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.overlay-card h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  color: var(--g);
+  margin-bottom: 10px;
+}
+.overlay-card p {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 20px;
+}
+.overlay-card input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: 'Barlow', sans-serif;
+  margin-bottom: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.overlay-card input:focus {
+  border-color: var(--g);
+}
+.overlay-card button {
+  background: var(--g);
+  color: var(--wh);
+  border: none;
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.overlay-card button:hover {
+  background: var(--gd);
+}
+#overlay-error {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 10px;
+  display: none;
+  font-weight: 600;
+}
+
+
+/* ── TOP NAV ─────────────────────────────────────────── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(26, 122, 60, 0.85); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px); 
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 48px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  transition: all 0.3s ease;
+}
+/* Stile per i blocchi completati */
+.block.completed {
+  background: #e8f5ee; 
+  border-left: 4px solid var(--gl);
+  transition: all 0.3s ease;
+}
+
+/* La barra di progresso in alto */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--acc); 
+  width: 0%;
+  z-index: 1000;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px rgba(245, 197, 24, 0.6);
+}
+/* --- EFFETTO ALLENAMENTO COMPLETATO --- */
+.session {
+    transition: all 0.4s ease;
+}
+.session.session-completed {
+    border-color: var(--gl);
+    box-shadow: 0 4px 15px rgba(38, 166, 83, 0.25);
+    opacity: 0.6; /* Rende il box semitrasparente */
+}
+.session.session-completed:hover {
+    opacity: 1; /* Torna visibile al passaggio */
+}
+.session.session-completed .session-hdr {
+    background: var(--gl); 
+    transition: background 0.4s ease;
+}
+.session.session-completed .session-hdr h3::after {
+    content: ' ✓ COMPLETATO';
+    font-size: 12px;
+    color: var(--acc); 
+    margin-left: 12px;
+    background: rgba(0,0,0,0.2);
+    padding: 3px 8px;
+    border-radius: 6px;
+    vertical-align: middle;
+}
+.nav-brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--wh);
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+.nav-links {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.nav-links a:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+/* --- MENU A TENDINA (DROPDOWN) --- */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: rgba(26, 122, 60, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-width: 135px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  z-index: 200;
+  top: 110%;
+  left: 0;
+  padding: 5px 0;
+  overflow: hidden;
+}
+
+.dropdown:last-child .dropdown-content {
+  left: auto;
+  right: 0;
+}
+
+.dropdown.active .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 0;
+  white-space: normal;
+  text-transform: none;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.dropdown-content a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── WRAPPER ─────────────────────────────────────────── */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── COVER ───────────────────────────────────────────── */
+.cover {
+  background: var(--g);
+  color: var(--wh);
+  padding: 52px 32px 44px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 20px 20px;
+  margin-bottom: 28px;
+}
+.cover::before {
+  content: 'GK';
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 220px;
+  font-weight: 700;
+  color: rgba(255,255,255,.05);
+  position: absolute;
+  right: -12px;
+  top: -30px;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+.cover-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 10px;
+}
+.cover h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(40px, 8vw, 58px);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 14px;
+  letter-spacing: .5px;
+}
+.cover-sub {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255,255,255,.82);
+  max-width: 480px;
+  margin-bottom: 24px;
+  line-height: 1.55;
+}
+.cover-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.pill {
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 100px;
+  padding: 4px 13px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── INFO BOX ────────────────────────────────────────── */
+.info-box {
+  background: var(--gp);
+  border-left: 5px solid var(--gl);
+  border-radius: var(--r);
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+.info-box h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--g);
+  margin-bottom: 6px;
+  letter-spacing: .3px;
+}
+.info-box p { font-size: 14px; color: var(--text-sec); line-height: 1.6; }
+
+/* ── WARMUP ──────────────────────────────────────────── */
+.warmup {
+  background: var(--wh);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1.5px solid var(--border-c);
+}
+
+/* ── WEEK HEADER ─────────────────────────────────────── */
+.week-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 32px 0 16px;
+}
+.week-header h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--g);
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+.week-header .line {
+  flex: 1;
+  height: 2px;
+  background: var(--gp);
+  border-radius: 2px;
+}
+
+/* ── SESSION CARD ────────────────────────────────────── */
+.session {
+  background: var(--wh);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 16px;
+  border: 1.5px solid var(--border-c);
+  transition: box-shadow .2s;
+}
+.session:hover { box-shadow: 0 4px 20px rgba(26,122,60,.1); }
+
+.session-hdr {
+  background: var(--g);
+  color: var(--wh);
+  padding: 13px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.session-hdr h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+.session-focus {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.15);
+  border-radius: 100px;
+  padding: 4px 12px;
+  color: rgba(255,255,255,.9);
+}
+.session-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── BLOCK ───────────────────────────────────────────── */
+.block {
+  background: var(--gr);
+  border-radius: 8px;
+  padding: 13px 15px;
+}
+.block-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--wh);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 3px 9px;
+  margin-bottom: 9px;
+  background: var(--g);
+}
+.block-label.wu   { background: var(--blue); }
+.block-label.cd   { background: var(--purple); }
+.block-label.b1   { background: var(--g); }
+.block-label.b2   { background: #2d6e3e; }
+.block-label.b3   { background: var(--gd); }
+
+.block p { font-size: 14px; margin-bottom: 5px; }
+
+ul.ex {
+  list-style: none;
+  margin-top: 6px;
+}
+ul.ex li {
+  padding: 3px 0 3px 18px;
+  position: relative;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+ul.ex li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--gl);
+  font-size: 11px;
+  top: 5px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+.badge {
+  background: rgba(26,122,60,.1);
+  color: var(--gd);
+  border-radius: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+}
+.badge.y { background: #fff3cd; color: #7a5500; }
+
+/* ── TESTS ───────────────────────────────────────────── */
+.tests-hdr {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 36px 0 14px;
+}
+.tests-hdr h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #444;
+  letter-spacing: .3px;
+  white-space: nowrap;
+}
+.tests-hdr .line { flex: 1; height: 2px; background: #e0e0e0; border-radius: 2px; }
+
+.day-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gm);
+  margin: 20px 0 8px;
+}
+
+.test-card {
+  background: var(--wh);
+  border-radius: var(--r);
+  border: 1.5px solid var(--border-g);
+  border-left: 4px solid #4a6fa5;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+}
+.test-card h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  color: var(--dk);
+  margin-bottom: 3px;
+}
+.test-card .test-obj {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gm);
+  margin-bottom: 9px;
+}
+
+/* ── FOOTER ──────────────────────────────────────────── */
+footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1.5px solid #dde0dd;
+  font-size: 12px;
+  color: var(--gm);
+  text-align: center;
+  line-height: 1.9;
+}
+
+/* ── MOBILE ──────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .cover { padding: 40px 22px 36px; }
+  .session-hdr { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .session-focus { font-size: 10px; }
+  nav { padding: 0 14px; }
+}
+#back-to-top {
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px;
+    background: var(--g); 
+    color: white;
+    width: 45px; 
+    height: 45px; 
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer; 
+    opacity: 0; 
+    pointer-events: none;
+    transition: all 0.3s ease; 
+    z-index: 999; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+#back-to-top.visible { 
+    opacity: 1; 
+    pointer-events: auto; 
+}
+
+/* --- STILI INPUT TEST E BOTTONI --- */
+.test-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 12px;
+  border: 1.5px solid var(--border-g);
+  border-radius: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.test-input:focus { border-color: var(--g); }
+
+.test-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--g);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.2s;
+  box-shadow: 0 4px 10px rgba(26, 122, 60, 0.2);
+}
+.test-btn:hover { background: var(--gd); }
+
+/* --- PULSANTE WHATSAPP FLUTTUANTE --- */
+#wa-float {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; /* In basso a sinistra per bilanciare il "torna su" a destra */
+  background: #25D366;
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+}
+#wa-float:hover { transform: scale(1.1); }
+#wa-float svg { width: 28px; height: 28px; fill: currentColor; }
+
+/* --- TIMESTAMP SESSIONE COMPLETATA --- */
+.session-timestamp {
+  font-size: 10px;
+  color: var(--acc);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: rgba(0,0,0,0.15);
+  padding: 2px 8px;
+  border-radius: 10px;
+  display: none;
+}
+.session-timestamp.visible { display: inline-block; }
+
+/* --- DROPDOWN IMPOSTAZIONI --- */
+.dropdown-content .danger { color: #ff8080 !important; }
+.dropdown-content .danger:hover { background: rgba(255,100,100,0.15) !important; }
+
+/* --- DARK TOGGLE + SHARE --- */
+.nav-icon-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  padding: 5px 8px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.nav-icon-btn:hover { background: rgba(255,255,255,0.25); }
+.nav-icon-btn svg { width: 17px; height: 17px; stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* --- CONTATORE SESSIONI --- */
+#session-counter {
+  margin-top: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+#counter-bar-wrap {
+  flex: 1; height: 6px; background: rgba(255,255,255,0.18);
+  border-radius: 3px; overflow: hidden; max-width: 180px;
+}
+#counter-bar { height: 100%; background: var(--acc);
+  border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+#counter-text {
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+}
+
+/* --- NOTE SESSIONE --- */
+.session-note {
+  width: 100%; margin-top: 12px; padding: 10px 12px;
+  border: 1.5px solid var(--border-c);
+  border-radius: 8px; font-family: 'Barlow', sans-serif;
+  font-size: 13px; resize: vertical; min-height: 56px;
+  background: var(--wh); color: var(--dk);
+  outline: none; transition: border-color 0.2s;
+  line-height: 1.5;
+}
+.session-note:focus { border-color: var(--gl); }
+.session-note::placeholder { color: var(--gm); font-style: italic; }
+
+/* ── COVER: pattern puntini ─────────────────────────── */
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+  z-index: 0;
+}
+.cover > * { position: relative; z-index: 1; }
+
+/* ── SESSIONE: numero cerchio ────────────────────────── */
+.session-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: rgba(255,255,255,.18);
+  border: 1.5px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 9px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* ── SEZIONE TEST: distinta ──────────────────────────── */
+.tests-hdr h2 { color: #2c4a7c !important; }
+.tests-hdr .line { background: #cad6ea !important; }
+.test-card {
+  border-left: 4px solid #4a6fa5 !important;
+  border-top: none; border-right: none; border-bottom: none;
+}
+.test-card h4 { color: #2c4a7c !important; }
+.test-card .test-obj { color: #4a6fa5 !important; letter-spacing: 1.5px; }
+[data-theme="dark"] .tests-hdr h2 { color: #7faad4 !important; }
+[data-theme="dark"] .test-card h4 { color: #7faad4 !important; }
+[data-theme="dark"] .test-card .test-obj { color: #7faad4 !important; }
+[data-theme="dark"] .tests-hdr .line { background: #2a3d5c !important; }
+
+/* ── SCROLL ANIMATIONS ───────────────────────────────── */
+.will-animate {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .55s cubic-bezier(.16,1,.3,1),
+              transform .55s cubic-bezier(.16,1,.3,1),
+              box-shadow .2s;
+}
+.will-animate.in-view { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .will-animate { opacity: 1; transform: none; transition: none; }
+}
+@media print {
+  body { font-size: 12px !important; background: white !important; color: black !important; }
+  nav, #wa-float, #back-to-top, #ft-bar, #progress-bar,
+  .session-note, .guide-section { display: none !important; }
+  .session, .block, .test-card { break-inside: avoid; }
+  .week-header { break-before: page; }
+  .cover { border-radius: 0 !important; margin-bottom: 16px !important; }
+  .cover::after { display: none; }
+  .session { border: 1px solid #ccc !important; box-shadow: none !important; }
+  .block { background: #f8f8f8 !important; }
+  .session-hdr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .session-completed { opacity: 1 !important; }
+  .info-box { border: 1px solid #ccc !important; background: #f8f8f8 !important; }
+  a[href]::after { content: none !important; }
+}
+
+/* ── GUIDA COLLASSABILE ──────────────────────────────── */
+.guide-section {
+  background: var(--wh);
+  border: 1.5px solid var(--border-c);
+  border-radius: var(--r);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.guide-toggle {
+  width: 100%; background: none; border: none; padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px; font-weight: 700; color: var(--g); letter-spacing: .3px;
+  transition: background .15s;
+}
+.guide-toggle:hover { background: var(--gp); }
+.guide-toggle svg { transition: transform .25s; flex-shrink: 0; }
+.guide-toggle.open svg { transform: rotate(180deg); }
+.guide-body {
+  padding: 0 14px 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.guide-body.hidden { display: none; }
+.guide-card {
+  background: var(--gr);
+  border-radius: 8px;
+  padding: 11px 12px;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.guide-icon {
+  font-size: 20px; flex-shrink: 0; line-height: 1.2;
+}
+.guide-card-title {
+  font-size: 12px; font-weight: 700; color: var(--g);
+  margin-bottom: 3px; line-height: 1.3;
+}
+.guide-card-desc {
+  font-size: 11.5px; color: var(--gm); line-height: 1.45;
+}
+@media (max-width: 440px) {
+  .guide-body { grid-template-columns: 1fr; }
+}
+
+/* ── FLOATING TIMER ──────────────────────────────────── */
+#ft-bar {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: var(--gd);
+  color: white;
+  border-radius: 50px;
+  padding: 10px 18px 10px 20px;
+  display: flex; align-items: center; gap: 14px;
+  z-index: 997;
+  box-shadow: 0 6px 24px rgba(0,0,0,.35);
+  transition: opacity .3s, transform .3s;
+  white-space: nowrap;
+}
+#ft-bar.ft-hidden {
+  opacity: 0; pointer-events: none;
+  transform: translateX(-50%) translateY(16px);
+}
+#ft-bar.ft-done { background: #c0392b; }
+#ft-label-text { font-size: 11px; opacity: .8; margin-bottom: 1px; }
+#ft-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px; font-weight: 700; line-height: 1;
+  min-width: 54px; text-align: center;
+}
+.ft-btn {
+  background: rgba(255,255,255,.18); border: none; border-radius: 50%;
+  width: 30px; height: 30px; color: white; font-size: 14px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .15s; flex-shrink: 0;
+}
+.ft-btn:hover { background: rgba(255,255,255,.3); }
+
+/* ── BADGE TIMER ACTIVE ──────────────────────────────── */
+@keyframes timerPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,193,7,.5); }
+  50%      { box-shadow: 0 0 0 6px rgba(255,193,7,0); }
+}
+.badge.y.timer-running {
+  animation: timerPulse 1.5s infinite;
+  background: #ffc107 !important; color: #333 !important;
+}
+.badge.y.timer-paused {
+  background: #aaa !important; color: #fff !important;
+}
+</style>
+</head>
+<body>
+
+<div id="name-overlay">
+  <div class="overlay-card">
+    <h2>🧤 Benvenuto!</h2>
+    <p>Per registrare i tuoi progressi e attivare la scheda, inserisci il tuo <b>Nome e Cognome</b>.</p>
+    <input type="text" id="overlay-name-input" placeholder="Es. Mario Rossi" autocomplete="off">
+    <button id="overlay-name-btn">Entra nell'Allenamento</button>
+    <p id="overlay-error">⚠️ Inserisci un nome valido per continuare!</p>
+  </div>
+</div>
+
+<nav>
+  <span class="nav-brand">⬡ Portieri · Estate</span>
+  <div class="nav-links">
+    
+  <div class="dropdown" >
+    <a style="cursor:pointer;">Sett. 1 ▾</a>
+    <div class="dropdown-content">
+      <a href="#s1-a1">Allenamento 1</a>
+      <a href="#s1-a2">Allenamento 2</a>
+      <a href="#s1-a3">Allenamento 3</a>
+    </div>
+  </div>
+
+  <div class="dropdown" >
+    <a style="cursor:pointer;">Sett. 2 ▾</a>
+    <div class="dropdown-content">
+      <a href="#s2-a1">Allenamento 1</a>
+      <a href="#s2-a2">Allenamento 2</a>
+      <a href="#s2-a3">Allenamento 3</a>
+    </div>
+  </div>
+
+  <div class="dropdown" >
+    <a style="cursor:pointer;">Test ▾</a>
+    <div class="dropdown-content">
+      <a href="#test-a">Giornata A (Forza)</a>
+      <a href="#test-b">Giornata B (Rapidità)</a>
+    </div>
+  </div>
+
+
+  <button class="nav-icon-btn" id="dark-toggle" onclick="toggleDark()" title="Cambia tema" aria-label="Cambia tema">
+    <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+  <button class="nav-icon-btn" onclick="condividi()" title="Condividi" aria-label="Condividi">
+    <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+  </button>
+  <div class="dropdown" id="settings-dropdown">
+    <button class="nav-icon-btn" style="cursor:pointer;" aria-label="Impostazioni">
+      <svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+    <div class="dropdown-content" style="right:0;left:auto;">
+      <a id="install-btn" onclick="installApp()" style="cursor:pointer; display:none;">📱 Installa come app</a>
+      <a onclick="cambiaPortiere()" style="cursor:pointer;">🔄 Cambia nome</a>
+      <a onclick="ricominciaProgresso()" class="danger" style="cursor:pointer;">🗑 Ricomincia da capo</a>
+    </div>
+  </div>
+
+</div>
+</nav>
+
+<div class="cover">
+  <div class="cover-label">Programma estivo · Portieri · Settore giovanile</div>
+  <h1>Pre-Preparazione<br>Estiva</h1>
+  <p class="cover-sub">Un percorso di 2 settimane da svolgere <em>in autonomia</em> ad agosto, prima dell'inizio della preparazione ufficiale. Lavora con costanza, rispetta i recuperi e arriverai ai primi allenamenti con un passo avanti su tutti.</p>
+  <div class="cover-pills">
+    <span class="pill">⏱ 2 Settimane</span>
+    <span class="pill">📅 3 Sedute / Settimana</span>
+    <span class="pill">🧤 Settore Giovanile</span>
+    <span class="pill">🏃 Autonomo</span>
+    <span class="pill">⚡ Forza · Rapidità · Tecnica</span>
+  </div>
+  <div id="session-counter">
+    <div id="counter-bar-wrap"><div id="counter-bar"></div></div>
+    <span id="counter-text">0 / 6 allenamenti completati</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="info-box">
+    <h2>📋 Come usare questo programma</h2>
+    <p>Ogni seduta è strutturata in tre parti: <strong>Riscaldamento</strong> (sempre uguale, ~10 min), <strong>tre Blocchi di lavoro</strong> specifici per la giornata e un breve <strong>Defaticamento</strong> finale. Rispetta le pause indicate e non saltare mai il riscaldamento. Nei giorni di riposo puoi camminare, nuotare o pedalare — nessuna attività intensa. Porta sempre acqua e non allenarti nelle ore più calde.</p>
+  </div>
+
+
+  <!-- GUIDA RAPIDA -->
+  <div class="guide-section will-animate" id="guida">
+    <button class="guide-toggle" id="guida-btn" onclick="toggleGuida()" aria-expanded="false" aria-controls="guida-body">
+      <span>📖 Come funziona il sito</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="guide-body hidden" id="guida-body" role="region">
+      <div class="guide-card">
+        <span class="guide-icon">✅</span>
+        <div><div class="guide-card-title">Spunta i blocchi</div><div class="guide-card-desc">Man mano che completi ogni esercizio spuntalo — la barra gialla in cima avanza.</div></div>
+      </div>
+      <div class="guide-card">
+        <span class="guide-icon">⏱</span>
+        <div><div class="guide-card-title">Timer recupero</div><div class="guide-card-desc">Tocca un badge giallo col tempo per il countdown. Tocca ancora per pausa. Tieni premuto per resettare.</div></div>
+      </div>
+      <div class="guide-card">
+        <span class="guide-icon">📝</span>
+        <div><div class="guide-card-title">Note personali</div><div class="guide-card-desc">Scrivi come ti sei sentito dopo ogni seduta. Le note vengono inviate al mister.</div></div>
+      </div>
+      <div class="guide-card">
+        <span class="guide-icon">📤</span>
+        <div><div class="guide-card-title">Invio automatico</div><div class="guide-card-desc">Ogni spunta invia i progressi al foglio Google del mister in tempo reale.</div></div>
+      </div>
+      <div class="guide-card">
+        <span class="guide-icon">💬</span>
+        <div><div class="guide-card-title">Gruppo WhatsApp</div><div class="guide-card-desc">Il pulsante verde in basso a sinistra apre il gruppo con entrambi i preparatori.</div></div>
+      </div>
+      <div class="guide-card">
+        <span class="guide-icon">🌙</span>
+        <div><div class="guide-card-title">Dark mode</div><div class="guide-card-desc">Tocca la luna in alto per lo schermo scuro — utile di sera o in pieno sole.</div></div>
+      </div>
+      <div class="guide-card">
+        <span class="guide-icon">📱</span>
+        <div><div class="guide-card-title">Installa come app</div><div class="guide-card-desc">Dal browser tocca "Aggiungi a schermata Home" per aprirla senza barra del browser.</div></div>
+      </div>
+      <div class="guide-card">
+        <span class="guide-icon">🔄</span>
+        <div><div class="guide-card-title">Ricomincia</div><div class="guide-card-desc">Dal menu ⚙ puoi azzerare tutto il progresso o cambiare il nome del portiere.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="warmup" id="riscaldamento-principale">
+    <div style="background:#555;padding:10px 16px;">
+      <span class="block-label wu" style="margin:0">🔥 Riscaldamento Generale · 10 min · identico per ogni seduta</span>
+    </div>
+    <div style="padding:14px 16px;">
+      <ul class="ex">
+        <li>Corsa blanda continua come attività base di attivazione</li>
+        <li>Circonduzioni delle braccia avanti/indietro + alternati dx e sx</li>
+        <li>Spinte avanti/alto e slanci avanti/alto</li>
+        <li>Chiusure al petto e scivolamenti laterali (dx e sx)</li>
+        <li>Flessioni laterali del busto e della colonna vertebrale</li>
+        <li>Accenni di presa alta staccando con il piede (dx e sx)</li>
+        <li>Flessioni/distensioni del braccio opposto con rotazione della testa</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="week-header" id="sett1">
+    <h2>⚽ Settimana 1</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="session" id="s1-a1">
+    <div class="session-hdr" style="flex-wrap:wrap;gap:6px;" id="hdr-s1-a1">
+      <h3>Allenamento 1</h3>
+      <span class="session-focus">Resistenza aerobica · Agilità · Uscita alta</span>
+    <span class="session-timestamp" id="ts-s1-a1"></span></div>
+    <div class="session-body">
+      <div class="block">
+        <span class="block-label b1">Blocco 1 — Corsa di base</span>
+        <p><strong>Corsa lenta 15 min + 5 min in progressione</strong></p>
+        <ul class="ex">
+          <li>Mantieni un ritmo controllato nei primi 15 minuti</li>
+          <li>Negli ultimi 5 min aumenta gradualmente l'intensità fino a un ritmo sostenuto</li>
+        </ul>
+        <div class="badges"><span class="badge">20 min totali</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b2">Blocco 2 — Skip e corsa calciata</span>
+        <ul class="ex">
+          <li><strong>10 skip medi in avanzamento</strong> su 15 m → ritorno a corsa blanda</li>
+          <li>Recupero: <strong>5 min</strong></li>
+          <li><strong>10 corse calciate dietro</strong> su 15 m → ritorno a corsa blanda</li>
+        </ul>
+        <div class="badges"><span class="badge">2 serie</span><span class="badge y">5' recupero tra le serie</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b3">Blocco 3 — Simulazione uscita alta</span>
+        <p>Esegui <strong>2 stacchi tipo uscita alta</strong> seguiti da un <strong>allungo di 20 m</strong>.</p>
+        <div class="badges"><span class="badge">10 ripetizioni</span><span class="badge y">Recupero di passo tra le rip.</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label cd">🧘 Defaticamento</span>
+        <ul class="ex">
+          <li>Corsa blanda 3–4 min a ritmo molto lento</li>
+          <li>Stretching: polpacci, quadricipiti, flessori dell'anca, spalle e dorso</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="session" id="s1-a2">
+    <div class="session-hdr" style="flex-wrap:wrap;gap:6px;" id="hdr-s1-a2">
+      <h3>Allenamento 2</h3>
+      <span class="session-focus">Variazioni di ritmo · Coordinazione · Postura</span>
+    <span class="session-timestamp" id="ts-s1-a2"></span></div>
+    <div class="session-body">
+      <div class="block">
+        <span class="block-label b1">Blocco 1 — Corsa con variazioni di ritmo</span>
+        <p><strong>Corsa lenta 10 min</strong> + variazioni: <strong>1 min lento + 1 min veloce</strong>, ripetute <strong>5 volte</strong></p>
+        <div class="badges"><span class="badge">~20 min totali</span><span class="badge y">Non andare al massimo, ascolta le sensazioni</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b2">Blocco 2 — Circuito coordinativo sui coni</span>
+        <p>Disponi 4 coni a quadrato. Il portiere esegue:</p>
+        <ul class="ex">
+          <li>Corsa in avanti fino al <strong>cono 1</strong></li>
+          <li>Piede scaccia piede fino al <strong>cono 2</strong></li>
+          <li>Skip laterale fino al <strong>cono 3</strong></li>
+          <li>Corsa indietro fino al <strong>cono 4</strong> (punto di partenza)</li>
+        </ul>
+        <div class="badges"><span class="badge">8 ripetizioni</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b3">Blocco 3 — Postura e stabilità</span>
+        <p>Tieni ciascuna postura per <strong>20 secondi</strong>, <strong>3 volte</strong>:</p>
+        <ul class="ex">
+          <li><strong>Postura 1</strong> — Plank frontale (avambracci + punte dei piedi)</li>
+          <li><strong>Postura 2</strong> — Lunge statico (affondo tenuto, busto eretto)</li>
+          <li><strong>Postura 3</strong> — Plank laterale (appoggio su un avambraccio)</li>
+        </ul>
+        <div class="badges"><span class="badge">3 × ogni postura</span><span class="badge y">20" per posizione</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label cd">🧘 Defaticamento</span>
+        <ul class="ex"><li>Corsa blanda 3–4 min</li><li>Stretching: anca, adduttori, spalle, tricipiti</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="session" id="s1-a3">
+    <div class="session-hdr" style="flex-wrap:wrap;gap:6px;" id="hdr-s1-a3">
+      <h3>Allenamento 3</h3>
+      <span class="session-focus">Lavoro in salita · Uscite · Core</span>
+    <span class="session-timestamp" id="ts-s1-a3"></span></div>
+    <div class="session-body">
+      <div class="block">
+        <span class="block-label b1">Blocco 1 — Salita (skip + allungo)</span>
+        <p>Trovate una salita moderata:</p>
+        <ul class="ex">
+          <li>Avanza in <strong>skip</strong> per <strong>10 m</strong></li>
+          <li>Poi esegui un <strong>allungo di 15 m</strong> — tutto in salita</li>
+          <li>Recupero camminando indietro fino alla partenza</li>
+        </ul>
+        <div class="badges"><span class="badge">10 ripetizioni</span><span class="badge y">Recupero di passo tra le rip.</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b2">Blocco 2 — Uscite alte con ripristino</span>
+        <p>Esegui <strong>2 stacchi tipo uscita alta</strong>, poi torna a corsa indietro alla linea di partenza, riposizionandoti davanti al cono.</p>
+        <div class="badges"><span class="badge">3 serie da 4 ripetizioni dx e sx</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b3">Blocco 3 — Addominali</span>
+        <ul class="ex">
+          <li><strong>3 serie da 30</strong> addominali crunch frontale</li>
+          <li><strong>3 serie da 30</strong> addominali crunch trasverso (obliqui)</li>
+        </ul>
+        <div class="badges"><span class="badge y">Recupero 60" tra le serie</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label cd">🧘 Defaticamento</span>
+        <ul class="ex"><li>Corsa blanda 3–4 min in piano (non in salita)</li><li>Stretching: flessori dell'anca, polpacci, addominali, dorsali</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="week-header" id="sett2">
+    <h2>⚡ Settimana 2</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="session" id="s2-a1">
+    <div class="session-hdr" style="flex-wrap:wrap;gap:6px;" id="hdr-s2-a1">
+      <h3>Allenamento 1</h3>
+      <span class="session-focus">Resistenza progressiva · Agilità tecnica · Forza reattiva</span>
+    <span class="session-timestamp" id="ts-s2-a1"></span></div>
+    <div class="session-body">
+      <div class="block">
+        <span class="block-label b1">Blocco 1 — Corsa progressiva strutturata</span>
+        <p><strong>Corsa lenta 12 min</strong> + <strong>3 min progressione</strong> + <strong>2 min lenti</strong> + <strong>2 min progressione</strong></p>
+        <div class="badges"><span class="badge">19 min totali</span><span class="badge y">Progressione = aumento graduale, non sprint</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b2">Blocco 2 — Circuito ostacoli e slalom</span>
+        <ul class="ex">
+          <li>Supera a <strong>piedi pari 2 ostacoli</strong></li>
+          <li>Esegui uno <strong>slalom su 3 paletti</strong></li>
+          <li>Raggiungi il <strong>cono rosso</strong> a piede scaccia piede</li>
+          <li>Tocca tutti i coni rossi <strong>andata e ritorno</strong></li>
+        </ul>
+        <div class="badges"><span class="badge">8 ripetizioni</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b3">Blocco 3 — Crunch + Salti verticali</span>
+        <p>Esegui <strong>20 crunch frontali</strong>, alzati immediatamente e compie <strong>4 salti verticali</strong> sul posto.</p>
+        <div class="badges"><span class="badge">4 serie</span><span class="badge y">Recupero 90" tra le serie</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label cd">🧘 Defaticamento</span>
+        <ul class="ex"><li>Corsa blanda 3–4 min</li><li>Stretching completo: gambe, schiena, spalle</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="session" id="s2-a2">
+    <div class="session-hdr" style="flex-wrap:wrap;gap:6px;" id="hdr-s2-a2">
+      <h3>Allenamento 2</h3>
+      <span class="session-focus">Rapidità dei piedi · Cambi di direzione · Core dinamico</span>
+    <span class="session-timestamp" id="ts-s2-a2"></span></div>
+    <div class="session-body">
+      <div class="block">
+        <span class="block-label b1">Blocco 1 — Corda + Slalom</span>
+        <ul class="ex">
+          <li>Esegui <strong>20 saltelli con la corda</strong></li>
+          <li>Poi supera in <strong>slalom andata e ritorno</strong> 4 cinesini</li>
+        </ul>
+        <div class="badges"><span class="badge">8 ripetizioni</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b2">Blocco 2 — Cambi di direzione e balzi rana</span>
+        <ul class="ex">
+          <li>Esegui <strong>cambi di direzione</strong> su un percorso a V tra i coni</li>
+          <li>Al ritorno esegui <strong>balzi rana</strong> (salti bipodalici in avanzamento)</li>
+        </ul>
+        <div class="badges"><span class="badge">8 ripetizioni</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b3">Blocco 3 — Crunch trasverso + Sprint</span>
+        <ul class="ex">
+          <li>Esegui <strong>15 crunch trasversi</strong> dx e sx</li>
+          <li>Alzati immediatamente ed esegui uno <strong>sprint di 15 m</strong></li>
+        </ul>
+        <div class="badges"><span class="badge">6 ripetizioni</span><span class="badge y">Recupero 60" tra le rip.</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label cd">🧘 Defaticamento</span>
+        <ul class="ex"><li>Corsa blanda 3–4 min</li><li>Stretching: obliqui, flessori dell'anca, polpacci</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="session" id="s2-a3">
+    <div class="session-hdr" style="flex-wrap:wrap;gap:6px;" id="hdr-s2-a3">
+      <h3>Allenamento 3</h3>
+      <span class="session-focus">Balzi laterali · Rapidità sui coni · Core finale</span>
+    <span class="session-timestamp" id="ts-s2-a3"></span></div>
+    <div class="session-body">
+      <div class="block">
+        <span class="block-label b1">Blocco 1 — Balzi laterali sui coni</span>
+        <p>Esegui <strong>balzi laterali</strong> superando coni distanti <strong>130 cm</strong> l'uno dall'altro, poi ritorna a <strong>piede scaccia piede</strong>.</p>
+        <div class="badges"><span class="badge">6 rip. dx</span><span class="badge">6 rip. sx</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b2">Blocco 2 — Skip e sprint sui coni</span>
+        <ul class="ex">
+          <li>Va in <strong>skip fino al cono 1</strong> poi <strong>sprinta toccando il cono davanti</strong></li>
+          <li>Ripete l'esercizio sul <strong>cono 2</strong></li>
+        </ul>
+        <div class="badges"><span class="badge">8 ripetizioni</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label b3">Blocco 3 — Addominali e lombari</span>
+        <ul class="ex">
+          <li><strong>3 serie da 30</strong> addominali crunch frontale</li>
+          <li><strong>3 serie da 20</strong> lombari (iperestensioni da prono)</li>
+        </ul>
+        <div class="badges"><span class="badge y">Recupero 60" tra le serie</span></div>
+      </div>
+      <div class="block">
+        <span class="block-label cd">🧘 Defaticamento</span>
+        <ul class="ex">
+          <li>Corsa blanda 3–4 min</li>
+          <li>Stretching finale completo — prenditi il tuo tempo, hai finito la 2ª settimana! 🎉</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tests-hdr" id="test">
+    <h2>📊 Test di Valutazione</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="info-box" style="margin-bottom:16px;">
+    <h2>ℹ️ Nota sui test</h2>
+    <p>Esegui questi test all'inizio e alla fine del programma. I risultati servono come <strong>punto di partenza personale</strong> — non vanno comparati a tabelle standard. Porta con te un metro e un cronometro (va benissimo il cellulare).</p>
+  </div>
+
+  <p class="day-label" id="test-a">Giornata A · Valutazione della forza</p>
+
+  <div class="test-card">
+    <h4>Test 1 — Balzo Singolo da Fermo</h4>
+    <p class="test-obj">Obiettivo: forza esplosiva</p>
+    <ul class="ex">
+      <li>Posizione di partenza: angolo al ginocchio di 90°</li>
+      <li>Esegui un balzo il più lontano possibile in avanti</li>
+      <li>Misura la distanza coperta</li>
+      <li><strong>3 balzi</strong> · Recupero 2' tra ogni balzo</li>
+    </ul>
+    <input type="text" class="test-input" id="test1-res" placeholder="Risultato migliore (es. 2.15 m)">
+  </div>
+  <div class="test-card">
+    <h4>Test 2 — Balzo Singolo con Contromovimento</h4>
+    <p class="test-obj">Obiettivo: forza esplosiva + elasticità</p>
+    <ul class="ex">
+      <li>Partenza in piedi, esegui un <strong>contromovimento libero</strong> poi balza in avanti</li>
+      <li>Misura la distanza coperta</li>
+      <li><strong>3 balzi</strong> · Recupero 2' tra ogni balzo</li>
+    </ul>
+    <input type="text" class="test-input" id="test2-res" placeholder="Risultato migliore (es. 2.30 m)">
+  </div>
+  <div class="test-card">
+    <h4>Test 3 — Triplo Balzo da Fermo</h4>
+    <p class="test-obj">Obiettivo: forza esplosiva + reattività + elasticità</p>
+    <ul class="ex">
+      <li>Partenza: angolo al ginocchio 90°</li>
+      <li>Esegui <strong>3 balzi consecutivi</strong> in avanti</li>
+      <li>Misura la distanza totale e il tempo impiegato</li>
+      <li><strong>Fare il test 3 volte</strong> · Recupero 2' tra ogni triplo balzo</li>
+    </ul>
+    <input type="text" class="test-input" id="test3-res" placeholder="Risultato migliore (es. 6.10 m)">
+  </div>
+
+  <p class="day-label" style="margin-top:24px;" id="test-b">Giornata B · Rapidità, velocità e RSA</p>
+
+  <div class="test-card">
+    <h4>Test 4 — Skip Basso da Fermo 10"</h4>
+    <p class="test-obj">Obiettivo: rapidità degli arti inferiori</p>
+    <ul class="ex">
+      <li>Posizionati davanti a 2 paletti con nastro a ~20 cm sopra il ginocchio</li>
+      <li>Esegui skip per <strong>10 secondi</strong> cercando di toccare il nastro con le ginocchia</li>
+      <li>Conta il numero di tocchi</li>
+      <li><strong>2 ripetizioni</strong> · Recupero 2'</li>
+    </ul>
+    <input type="text" class="test-input" id="test4-res" placeholder="Numero max di tocchi (es. 45)">
+  </div>
+  <div class="test-card">
+    <h4>Test 5 — Sprint 30 m</h4>
+    <p class="test-obj">Obiettivo: capacità di accelerazione</p>
+    <ul class="ex">
+      <li>Sprint massimale su <strong>30 metri</strong></li>
+      <li>Misura il tempo con cronometro</li>
+      <li><strong>2 ripetizioni</strong> · Recupero attivo 6'</li>
+    </ul>
+    <input type="text" class="test-input" id="test5-res" placeholder="Tempo migliore (es. 4.25 s)">
+  </div>
+  <div class="test-card">
+    <h4>Test 6 — Navetta RSA (Sprint Ripetuti)</h4>
+    <p class="test-obj">Obiettivo: capacità di sprint ripetuti</p>
+    <ul class="ex">
+      <li>Sprint andata e ritorno toccando paletti distanti <strong>20 m</strong></li>
+      <li>Recupero: <strong>20 secondi</strong> tra ogni prova</li>
+      <li>Esegui <strong>6 prove</strong> consecutive — registra ogni tempo</li>
+      <li>Calcola M1 = media prime 2 prove &nbsp;|&nbsp; M2 = media ultime 2 prove</li>
+      <li><strong>Δ% = ((M2 – M1) ÷ M1) × 100</strong> — più alto = maggiore calo</li>
+    </ul>
+    <input type="text" class="test-input" id="test6-res" placeholder="Scrivi i 6 tempi o direttamente il Δ%">
+  </div>
+
+  <button onclick="inviaTestAlMister()" class="test-btn">📤 Invia Risultati Test al Mister</button>
+
+<div class="info-box" style="margin-top: 32px; text-align: center; border-left: 5px solid #25D366; background: #e8f5ee;">
+    <h2 style="color: #128C7E;">💬 Aggiorna i Mister</h2>
+    <p>Hai finito un allenamento o hai dei dubbi su un esercizio? Non esitare a scrivermi.</p>
+    <button onclick="inviaWhatsApp()" style="background: #25D366; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); transition: transform 0.2s;">
+      Invia Messaggio su WhatsApp
+    </button>
+  </div>
+
+  <footer>
+    Programma di pre-preparazione fisica per portieri del settore giovanile<br>
+    Redatto da Alessio Farinelli e Andrea Falcone per Polisportiva San Giacomo
+  </footer>
+
+</div>
+<script>
+// --- DARK MODE ---
+function toggleDark() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('gk-theme', next);
+    updateDarkIcon(next);
+}
+function updateDarkIcon(theme) {
+    const btn = document.getElementById('dark-toggle');
+    if (!btn) return;
+    const isDark = (theme || document.documentElement.getAttribute('data-theme')) === 'dark';
+    btn.innerHTML = isDark
+        ? `<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+        : `<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+}
+// Applica tema salvato subito al caricamento
+(function() {
+    const t = localStorage.getItem('gk-theme');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+})();
+
+// --- CONDIVIDI ---
+function condividi() {
+    if (navigator.vibrate) navigator.vibrate(40);
+    const url = window.location.href;
+    const title = 'Pre-Preparazione Estiva · Portieri';
+    const text = 'Programma di allenamento estivo — Polisportiva San Giacomo';
+    if (navigator.share) {
+        navigator.share({ title, text, url }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(url).then(() => {
+            const btn = document.querySelector('[onclick="condividi()"]');
+            if (btn) {
+                btn.style.background = 'rgba(37,211,102,0.4)';
+                setTimeout(() => btn.style.background = '', 1500);
+            }
+        });
+    }
+}
+
+
+// --- GUIDA COLLASSABILE ---
+function toggleGuida() {
+    const body = document.getElementById('guida-body');
+    const btn  = document.getElementById('guida-btn');
+    const open = !body.classList.contains('hidden');
+    body.classList.toggle('hidden', open);
+    btn.classList.toggle('open', !open);
+    btn.setAttribute('aria-expanded', String(!open));
+}
+
+// --- TIMER GLOBALE ---
+const TS = {
+    badge: null, origText: '', origBg: '', origColor: '',
+    total: 0, remaining: 0, paused: false, interval: null,
+    pressTimer: null,
+};
+
+function fmtTime(s) {
+    const m = Math.floor(s / 60), sec = s % 60;
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function ftShow(label) {
+    document.getElementById('ft-label-text').textContent = label || 'Recupero';
+    document.getElementById('ft-bar').classList.remove('ft-hidden','ft-done');
+}
+function ftHide() { document.getElementById('ft-bar').classList.add('ft-hidden'); }
+function ftUpdateDisplay() {
+    document.getElementById('ft-time').textContent = fmtTime(TS.remaining);
+}
+
+function ftStop() {
+    clearInterval(TS.interval); TS.interval = null;
+    if (TS.badge) {
+        TS.badge.textContent = TS.origText;
+        TS.badge.style.background = TS.origBg;
+        TS.badge.style.color = TS.origColor;
+        TS.badge.classList.remove('timer-running','timer-paused');
+    }
+    TS.badge = null; TS.paused = false;
+    ftHide();
+}
+
+function ftTogglePause() {
+    if (!TS.badge) return;
+    if (TS.paused) {
+        // RIPRENDI
+        TS.paused = false;
+        TS.badge.classList.replace('timer-paused','timer-running');
+        document.getElementById('ft-pause-btn').textContent = '⏸';
+        TS.interval = setInterval(timerTick, 1000);
+    } else {
+        // PAUSA
+        clearInterval(TS.interval); TS.interval = null;
+        TS.paused = true;
+        TS.badge.classList.replace('timer-running','timer-paused');
+        TS.badge.textContent = '⏸ ' + fmtTime(TS.remaining);
+        document.getElementById('ft-pause-btn').textContent = '▶';
+    }
+}
+
+function playDoneSound() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        [[523,0],[659,.18],[784,.36]].forEach(([freq,t]) => {
+            const osc = ctx.createOscillator(), g = ctx.createGain();
+            osc.connect(g); g.connect(ctx.destination);
+            osc.frequency.value = freq; osc.type = 'sine';
+            g.gain.setValueAtTime(.3, ctx.currentTime+t);
+            g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime+t+.25);
+            osc.start(ctx.currentTime+t); osc.stop(ctx.currentTime+t+.3);
+        });
+    } catch(e) {}
+}
+
+function timerTick() {
+    TS.remaining--;
+    ftUpdateDisplay();
+    if (!TS.paused) {
+        TS.badge.textContent = '⏱ ' + fmtTime(TS.remaining);
+    }
+    if (TS.remaining <= 0) {
+        clearInterval(TS.interval); TS.interval = null;
+        // Fine recupero
+        document.getElementById('ft-bar').classList.add('ft-done');
+        document.getElementById('ft-time').textContent = 'FINITO!';
+        if (TS.badge) {
+            TS.badge.textContent = '💥 FINITO!';
+            TS.badge.style.background = '#dc3545';
+            TS.badge.style.color = '#fff';
+            TS.badge.classList.remove('timer-running');
+        }
+        if (navigator.vibrate) navigator.vibrate([120,80,120,80,200]);
+        playDoneSound();
+        setTimeout(() => ftStop(), 4000);
+    }
+}
+
+function parseTimerSeconds(text) {
+    const t = text.toLowerCase().replace(/\s/g,'');
+    // minuti: 2', 5', 6', 10', ecc.
+    const mMin = t.match(/(\d+)['′']/);
+    if (mMin) return parseInt(mMin[1]) * 60;
+    // secondi: 20", 60", 90", ecc.
+    const mSec = t.match(/(\d+)[""″\']/);
+    if (mSec) return parseInt(mSec[1]);
+    return 0;
+}
+
+function initBadgeTimer(badge) {
+    const secs = parseTimerSeconds(badge.textContent);
+    if (secs <= 0) return;
+    const origText = badge.textContent;
+    const origBg   = badge.style.background || '#fff3cd';
+    const origColor= badge.style.color || '#7a5500';
+
+    badge.style.cursor = 'pointer';
+    badge.style.userSelect = 'none';
+    badge.title = 'Tocca per avviare · Tocca ancora per pausa · Tieni premuto per resettare';
+
+    // Long press → reset
+    badge.addEventListener('pointerdown', () => {
+        TS.pressTimer = setTimeout(() => {
+            if (navigator.vibrate) navigator.vibrate(80);
+            ftStop();
+        }, 600);
+    });
+    ['pointerup','pointerleave','pointercancel'].forEach(ev =>
+        badge.addEventListener(ev, () => clearTimeout(TS.pressTimer))
+    );
+
+    badge.addEventListener('click', () => {
+        clearTimeout(TS.pressTimer);
+        if (TS.badge === badge) {
+            // Questo timer è attivo → pausa/riprendi
+            ftTogglePause();
+        } else {
+            // Avvia nuovo timer (ferma eventuale precedente)
+            ftStop();
+            TS.badge = badge; TS.origText = origText;
+            TS.origBg = origBg; TS.origColor = origColor;
+            TS.total = secs; TS.remaining = secs; TS.paused = false;
+            badge.classList.add('timer-running');
+            badge.textContent = '⏱ ' + fmtTime(secs);
+            // Mostra floating timer
+            const blockLabel = badge.closest('.block')?.querySelector('.block-label');
+            const label = blockLabel ? blockLabel.textContent.trim().split('—')[1]?.trim() || 'Recupero' : 'Recupero';
+            ftShow(label);
+            ftUpdateDisplay();
+            document.getElementById('ft-pause-btn').textContent = '⏸';
+            if (navigator.vibrate) navigator.vibrate(40);
+            TS.interval = setInterval(timerTick, 1000);
+        }
+    });
+}
+
+// --- CONTATORE SESSIONI ---
+function updateSessionCounter() {
+    const sids = ['s1-a1','s1-a2','s1-a3','s2-a1','s2-a2','s2-a3'];
+    const done = sids.filter(sid => {
+        const el = document.getElementById(sid);
+        return el && el.classList.contains('session-completed');
+    }).length;
+    const text = document.getElementById('counter-text');
+    const bar  = document.getElementById('counter-bar');
+    if (text) text.textContent = `${done} / 6 allenamenti completati`;
+    if (bar)  bar.style.width = (done / 6 * 100) + '%';
+}
+
+// --- FUNZIONE WHATSAPP ---
+function inviaWhatsApp() {
+    if (navigator.vibrate) navigator.vibrate(80);
+    const allBoxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+    const checkValidi = allBoxes.filter(cb => !cb.closest('.test-card, .warmup-session'));
+    const total = checkValidi.length;
+    const checked = checkValidi.filter(cb => cb.checked).length;
+    const percentage = total === 0 ? 0 : Math.round((checked / total) * 100);
+    
+    window.open('https://chat.whatsapp.com/Igx6klqphFiKEouEbgwaYi', '_blank');
+}
+
+
+// --- PWA INSTALL ---
+let _installPrompt = null;
+const _isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const _isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                   || window.navigator.standalone === true;
+
+function _showInstallBtn(show) {
+    const btn = document.getElementById('install-btn');
+    if (btn) btn.style.display = show ? 'block' : 'none';
+}
+
+// Non mostrare se già in esecuzione come app installata
+if (!_isStandalone) {
+    if (_isIOS) {
+        // iOS: mostra sempre la voce con istruzioni manuali
+        _showInstallBtn(true);
+    } else {
+        // Android/Chrome: aspetta l'evento nativo
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            _installPrompt = e;
+            _showInstallBtn(true);
+        });
+        window.addEventListener('appinstalled', () => {
+            _installPrompt = null;
+            _showInstallBtn(false);
+        });
+    }
+}
+
+function installApp() {
+    if (_installPrompt) {
+        _installPrompt.prompt();
+        _installPrompt.userChoice.then(() => { _installPrompt = null; _showInstallBtn(false); });
+    } else if (_isIOS) {
+        alert('Su iPhone/iPad:\n\n1. Tocca il pulsante Condividi (\u25a1\u2191) in basso\n2. Scorri e tocca \"Aggiungi a schermata Home\"\n3. Conferma con \"Aggiungi\"');
+    }
+}
+
+// --- CAMBIA PORTIERE ---
+function cambiaPortiere() {
+    if (confirm('Vuoi cambiare il nome? Il tuo progresso verrà mantenuto.')) {
+        localStorage.removeItem('gk_player_name');
+        location.reload();
+    }
+}
+
+// --- RICOMINCIA DA CAPO ---
+function ricominciaProgresso() {
+    if (confirm('Sei sicuro di voler azzerare tutto il progresso?\nQuesta azione non può essere annullata.')) {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && (k.startsWith('chk-') || k.startsWith('ts-') || k.startsWith('test') || k.startsWith('note-'))) {
+                keysToRemove.push(k);
+            }
+        }
+        keysToRemove.forEach(k => localStorage.removeItem(k));
+        location.reload();
+    }
+}
+
+// --- FUNZIONE PER INVIARE DATI AL GOOGLE SHEET DEL MISTER (con debounce) ---
+let _sheetsTimer = null;
+function inviaDatiAlMister(percentuale, eserciziCompletatiStr) {
+    const playerName = localStorage.getItem("gk_player_name");
+    if (!playerName) return;
+    clearTimeout(_sheetsTimer);
+    _sheetsTimer = setTimeout(() => {
+        // Raccoglie i timestamp di completamento sessioni
+        const timestamps = {};
+        const notes = {};
+        ['s1-a1','s1-a2','s1-a3','s2-a1','s2-a2','s2-a3'].forEach(sid => {
+            timestamps[sid] = localStorage.getItem('ts-' + sid) || '';
+            notes[sid] = localStorage.getItem('note-' + sid) || '';
+        });
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbyIQ_gHDsOEnBLFYysanLaVwHBcauXaCR347X2S5cwEO8idn-gX6X7K61Tphax8NO0E/exec";
+        fetch(webAppUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({
+                nome: playerName,
+                percentuale: Math.round(percentuale),
+                esercizi: eserciziCompletatiStr || "",
+                timestamps: timestamps,
+                notes: notes  // ← note personali per sessione
+            })
+        }).catch(error => console.log("Errore di invio:", error));
+    }, 2000);
+}
+
+// --- FUNZIONE INVIO TEST ---
+function inviaTestAlMister() {
+    const playerName = localStorage.getItem("gk_player_name");
+    if (!playerName) return;
+    const btn = document.querySelector('.test-btn');
+    btn.textContent = "⏳ Invio in corso...";
+    const t1 = document.getElementById('test1-res').value.trim() || "-";
+    const t2 = document.getElementById('test2-res').value.trim() || "-";
+    const t3 = document.getElementById('test3-res').value.trim() || "-";
+    const t4 = document.getElementById('test4-res').value.trim() || "-";
+    const t5 = document.getElementById('test5-res').value.trim() || "-";
+    const t6 = document.getElementById('test6-res').value.trim() || "-";
+    const stringaTest = `T1: ${t1} | T2: ${t2} | T3: ${t3} | T4: ${t4} | T5: ${t5} | T6: ${t6}`;
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyIQ_gHDsOEnBLFYysanLaVwHBcauXaCR347X2S5cwEO8idn-gX6X7K61Tphax8NO0E/exec";
+    fetch(webAppUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ nome: playerName, tipo: "test", risultatiTest: stringaTest })
+    }).then(() => {
+        btn.textContent = "✅ Risultati Inviati!";
+        btn.style.background = "#25D366";
+        setTimeout(() => { btn.textContent = "📤 Invia Risultati Test al Mister"; btn.style.background = "var(--g)"; }, 3000);
+    }).catch(() => { btn.textContent = "❌ Riprova"; });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // --- GESTIONE SALVATAGGIO INPUT TEST ---
+    document.querySelectorAll('.test-input').forEach(input => {
+        input.value = localStorage.getItem(input.id) || "";
+        input.addEventListener('input', () => localStorage.setItem(input.id, input.value));
+    });
+
+    // --- GESTIONE MENU A TENDINA ---
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+        dropdown.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.closest('.dropdown-content')) {
+                this.classList.remove('active');
+                return;
+            }
+            document.querySelectorAll('.dropdown').forEach(d => {
+                if (d !== this) d.classList.remove('active');
+            });
+            this.classList.toggle('active');
+        });
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
+        }
+    });
+    
+    // --- GESTIONE NOME GIOCATORE (OBBLIGATORIO) ---
+    let playerName = localStorage.getItem("gk_player_name");
+    const overlay = document.getElementById('name-overlay');
+    const overlayInput = document.getElementById('overlay-name-input');
+    const overlayBtn = document.getElementById('overlay-name-btn');
+    const overlayError = document.getElementById('overlay-error');
+
+    if (playerName === "Portiere Anonimo") {
+        playerName = null;
+        localStorage.removeItem("gk_player_name");
+    }
+
+    const handleLogin = () => {
+        const nameVal = overlayInput.value.trim();
+        if (nameVal.length < 2) {
+            overlayError.style.display = 'block';
+        } else {
+            localStorage.setItem("gk_player_name", nameVal);
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            location.reload();
+        }
+    };
+
+    if (!playerName || playerName.trim() === "") {
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        overlayBtn.addEventListener('click', handleLogin);
+        // ✅ FIX: Enter key support
+        overlayInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+    } else {
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // --- CARICA TIMESTAMP SESSIONI ---
+    ['s1-a1','s1-a2','s1-a3','s2-a1','s2-a2','s2-a3'].forEach(sid => {
+        const saved = localStorage.getItem('ts-' + sid);
+        if (saved) {
+            const el = document.getElementById('ts-' + sid);
+            if (el) { el.textContent = '✓ ' + saved; el.classList.add('visible'); }
+        }
+    });
+
+    // --- DARK MODE ICON INIT ---
+    updateDarkIcon();
+
+    // --- NOTE PERSONALI PER SESSIONE ---
+    ['s1-a1','s1-a2','s1-a3','s2-a1','s2-a2','s2-a3'].forEach(sid => {
+        const body = document.querySelector('#' + sid + ' .session-body');
+        if (!body) return;
+        const ta = document.createElement('textarea');
+        ta.className = 'session-note';
+        ta.placeholder = '📝 Note su questa sessione (come ti sei sentito, cosa hai saltato...)';
+        ta.value = localStorage.getItem('note-' + sid) || '';
+        ta.addEventListener('input', () => localStorage.setItem('note-' + sid, ta.value));
+        ta.addEventListener('click', e => e.stopPropagation());
+        body.appendChild(ta);
+    });
+
+
+    // 1. INSERIMENTO AUTOMATICO DEL RISCALDAMENTO
+    const warmupHTML = `
+    <div class="block warmup-session" onclick="document.getElementById('riscaldamento-principale').scrollIntoView({ behavior: 'smooth' });" style="background: #e6f0fa; border-left: 4px solid var(--blue); margin-bottom: 12px; cursor: pointer;" title="Clicca per leggere i dettagli del Riscaldamento Generale">
+        <span class="block-label wu">🔥 Riscaldamento (10 min)</span>
+        <p style="font-size: 13px; margin-top: 4px; color: #444;">Clicca qui o sul box per scorrere ai dettagli del riscaldamento generale.</p>
+    </div>
+    `;
+    document.querySelectorAll('.session-body').forEach(body => {
+        body.insertAdjacentHTML('afterbegin', warmupHTML);
+    });
+
+    // 2. GESTIONE SPUNTE, PROGRESSO E VIBRAZIONE
+    const allCheckboxes = [];
+    let confettiSparati = false;
+
+    function updateProgress() {
+        const checkValidiPerProgresso = allCheckboxes.filter(cb => {
+            const block = cb.closest('.test-card, .warmup-session');
+            return block === null; 
+        });
+
+        const total = checkValidiPerProgresso.length;
+        const checked = checkValidiPerProgresso.filter(cb => cb.checked).length;
+        const percentage = total === 0 ? 0 : (checked / total) * 100;
+        document.getElementById('progress-bar').style.width = percentage + '%';
+
+        if (percentage === 100 && !confettiSparati) {
+            confettiSparati = true;
+            setTimeout(() => {
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#1a7a3c', '#f5c518', '#ffffff'] 
+                });
+            }, 300); 
+        } else if (percentage < 100) {
+            confettiSparati = false; 
+        }
+        
+        return percentage;
+    }
+
+    // Costruisce i checkbox dinamicamente
+    document.querySelectorAll(".session-body .block-label, .test-card h4").forEach((header, index) => {
+        const id = `chk-blocco-${index}`;
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.id = id;
+        cb.style.marginRight = "12px";
+        cb.style.cursor = "pointer";
+        cb.style.width = "20px";
+        cb.style.height = "20px";
+        cb.style.accentColor = "#1a7a3c";
+        cb.style.flexShrink = "0";
+
+        cb.addEventListener("click", (e) => e.stopPropagation());
+        
+        const wrapper = document.createElement("div");
+        wrapper.style.display = "flex";
+        wrapper.style.alignItems = "center";
+        
+        if (header.classList.contains("block-label")) {
+            wrapper.style.marginBottom = "9px";
+            header.style.marginBottom = "0"; 
+        } else {
+            wrapper.style.marginBottom = "6px";
+            header.style.marginBottom = "0";
+        }
+        
+        header.parentNode.insertBefore(wrapper, header);
+        wrapper.appendChild(cb);
+        wrapper.appendChild(header);
+        
+        const parentBlock = wrapper.closest('.block, .test-card');
+
+        const applyVisualFeedback = () => {
+            if (parentBlock) {
+                if (cb.checked) {
+                    parentBlock.classList.add('completed');
+                } else {
+                    parentBlock.classList.remove('completed');
+                }
+            }
+
+            document.querySelectorAll('.session').forEach(session => {
+                const checkboxesInSession = session.querySelectorAll('input[type="checkbox"]');
+                if (checkboxesInSession.length > 0) {
+                    const allChecked = Array.from(checkboxesInSession).every(box => box.checked);
+                    if (allChecked) {
+                        session.classList.add('session-completed');
+                        updateSessionCounter();
+                        // ✅ NUOVO: salva timestamp di completamento
+                        const sid = session.id;
+                        if (sid && !localStorage.getItem('ts-' + sid)) {
+                            // 🎉 Confetti locale per sessione completata
+                            const rect = session.getBoundingClientRect();
+                            const originX = (rect.left + rect.width / 2) / window.innerWidth;
+                            const originY = Math.max(0.1, Math.min(0.9, (rect.top + 60) / window.innerHeight));
+                            confetti({ particleCount: 55, spread: 60, startVelocity: 28,
+                                origin: { x: originX, y: originY },
+                                colors: ['#1a7a3c','#26a653','#f5c518','#ffffff'] });
+                            const now = new Date().toLocaleString('it-IT', {
+                                day: '2-digit', month: '2-digit',
+                                hour: '2-digit', minute: '2-digit'
+                            });
+                            localStorage.setItem('ts-' + sid, now);
+                            const tsEl = document.getElementById('ts-' + sid);
+                            if (tsEl) { tsEl.textContent = '✓ ' + now; tsEl.classList.add('visible'); }
+                        }
+                    } else {
+                        session.classList.remove('session-completed');
+                        updateSessionCounter();
+                        // Rimuovi timestamp se si de-spunta
+                        const sid = session.id;
+                        if (sid) {
+                            localStorage.removeItem('ts-' + sid);
+                            const tsEl = document.getElementById('ts-' + sid);
+                            if (tsEl) { tsEl.textContent = ''; tsEl.classList.remove('visible'); }
+                        }
+                    }
+                }
+            });
+        };
+
+        cb.checked = localStorage.getItem(id) === "true";
+        allCheckboxes.push(cb);
+        applyVisualFeedback();
+        
+        // --- QUANDO IL PORTIERE SPUNTA UN ESERCIZIO ---
+        cb.addEventListener("change", () => {
+            if (navigator.vibrate) navigator.vibrate(40);
+            
+            localStorage.setItem(id, cb.checked);
+            applyVisualFeedback();
+            
+            // 1. Raccoglie i nomi degli esercizi effettivamente completati (e utili per il progresso)
+            const eserciziCompletati = [];
+            allCheckboxes.forEach((checkbox) => {
+                const block = checkbox.closest('.test-card, .warmup-session');
+                if (block === null && checkbox.checked) {
+                    // Estrae il testo dell'etichetta dell'esercizio spuntato
+                    eserciziCompletati.push(checkbox.nextSibling.textContent.trim());
+                }
+            });
+            const stringaEsercizi = eserciziCompletati.join("\n"); 
+            
+            // 2. Calcola la percentuale
+            const percentAttuale = updateProgress();
+            
+            // 3. Invia percentuale e stringa al Foglio Google
+            inviaDatiAlMister(percentAttuale, stringaEsercizi);
+        });
+    });
+
+    setTimeout(() => { updateProgress(); updateSessionCounter(); }, 100);
+
+    // ── MIGLIORIE VISIVE (eseguite dopo il DOM) ──
+    // ══ MIGLIORIE VISIVE ══════════════════════════════════
+    
+    // 1. NUMERI CERCHIO nelle session header
+    document.querySelectorAll('.session-hdr h3').forEach(h3 => {
+        const m = h3.textContent.match(/(\d+)/);
+        if (!m) return;
+        const n = m[1];
+        h3.innerHTML = '<span class="session-num">' + n + '</span>Allenamento ' + n;
+    });
+    
+    // 2. ICONE BLOCCHI
+    const ICONS = {
+        b1: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+        b2: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 2 3 14 10 14 7 22 17 10 11 10 13 2"/></svg>',
+        b3: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+        cd: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>',
+    };
+    document.querySelectorAll('.block-label').forEach(lbl => {
+        const cls = ['b1','b2','b3','cd'].find(c => lbl.classList.contains(c));
+        if (!cls || !ICONS[cls]) return;
+        lbl.insertAdjacentHTML('afterbegin', ICONS[cls]);
+    });
+    
+    // 3. SCROLL ANIMATIONS con stagger
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (!entry.isIntersecting) return;
+            const delay = parseInt(entry.target.dataset.delay || 0);
+            setTimeout(() => entry.target.classList.add('in-view'), delay);
+            io.unobserve(entry.target);
+        });
+    }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+    
+    // Raggruppa elementi per parent — stagger di 60ms tra fratelli
+    document.querySelectorAll('.session, .test-card, .week-header, .tests-hdr, .info-box, .warmup, .guide-section').forEach(el => {
+        // Calcola indice tra fratelli
+        const siblings = Array.from(el.parentNode.children).filter(c =>
+            c.matches('.session, .test-card, .week-header, .tests-hdr, .info-box, .warmup, .guide-section')
+        );
+        const idx = siblings.indexOf(el);
+        el.dataset.delay = idx * 60;
+        el.classList.add('will-animate');
+        io.observe(el);
+    });
+
+    // 3. GESTIONE TIMER — init su tutti i badge gialli
+    document.querySelectorAll(".badge.y").forEach(initBadgeTimer);
+});
+window.addEventListener('scroll', () => {
+    const btn = document.getElementById('back-to-top');
+    if (window.scrollY > 400) {
+        btn.classList.add('visible');
+    } else {
+        btn.classList.remove('visible');
+    }
+});
+</script>
+<div id="ft-bar" class="ft-hidden" role="timer" aria-live="polite">
+  <div>
+    <div id="ft-label-text">Recupero</div>
+    <div id="ft-time">0:00</div>
+  </div>
+  <button class="ft-btn" id="ft-pause-btn" onclick="ftTogglePause()" aria-label="Pausa/Riprendi">⏸</button>
+  <button class="ft-btn" onclick="ftStop()" aria-label="Ferma timer">✕</button>
+</div>
+<div id="wa-float" onclick="inviaWhatsApp()" title="Scrivi al Mister">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+  </svg>
+</div>
+<div id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Torna su">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</div>
+<div id="progress-bar"></div>
+</body>
+</html>
