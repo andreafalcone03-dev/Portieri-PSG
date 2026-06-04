@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Dashboard Mister · Portieri</title>
+<meta name="theme-color" content="#1a7a3c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g:    #1a7a3c;
+  --gl:   #26a653;
+  --gd:   #1a5c30;
+  --gp:   #e8f5ee;
+  --acc:  #f5c518;
+  --dk:   #0d0d0d;
+  --wh:   #ffffff;
+  --gr:   #f4f4f4;
+  --gm:   #777;
+  --r:    10px;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html,body { height:100%; font-family:'Barlow',sans-serif; background:#f0f4f1; color:var(--dk); }
+
+/* ── LOGIN ─────────────────────────────────────────────── */
+#login-screen {
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(145deg, #1a5c30 0%, #1a7a3c 60%, #26a653 100%);
+  padding:20px;
+}
+.login-card {
+  background:var(--wh); border-radius:20px;
+  padding:36px 32px 28px; width:100%; max-width:340px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+.login-logo {
+  width:64px; height:64px; border-radius:16px;
+  background:var(--g); color:white;
+  font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 16px;
+}
+.login-card h1 {
+  font-family:'Barlow Condensed',sans-serif; font-size:24px;
+  font-weight:700; color:var(--g); margin-bottom:4px;
+}
+.login-card p { font-size:13px; color:var(--gm); margin-bottom:24px; }
+
+.pin-dots {
+  display:flex; gap:12px; justify-content:center; margin-bottom:24px;
+}
+.pin-dots span {
+  width:14px; height:14px; border-radius:50%;
+  border:2px solid var(--g); background:transparent;
+  transition:background .15s;
+}
+.pin-dots span.filled { background:var(--g); }
+
+.pin-pad {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+  margin-bottom:12px;
+}
+.pin-btn {
+  height:54px; border:1.5px solid #e0e0e0; border-radius:10px;
+  background:var(--wh); font-size:22px; font-weight:500;
+  cursor:pointer; transition:background .1s, transform .1s;
+  display:flex; align-items:center; justify-content:center;
+}
+.pin-btn:active { background:#f0f0f0; transform:scale(.95); }
+.pin-btn.del { font-size:18px; color:var(--gm); }
+.pin-btn.empty { pointer-events:none; border-color:transparent; }
+#pin-error {
+  font-size:12px; color:#e74c3c; min-height:18px;
+  margin-top:8px;
+}
+
+/* ── DASHBOARD ──────────────────────────────────────────── */
+#dashboard { display:none; min-height:100vh; }
+
+.dash-nav {
+  background:var(--g); color:white;
+  padding:env(safe-area-inset-top) 20px 0;
+  position:sticky; top:0; z-index:50;
+}
+.dash-nav-inner {
+  display:flex; align-items:center; justify-content:space-between;
+  height:52px;
+}
+.dash-nav h1 {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px; font-weight:700; letter-spacing:.3px;
+}
+.dash-nav-actions { display:flex; gap:8px; }
+.dash-btn {
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25);
+  color:white; border-radius:8px; padding:6px 12px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  transition:background .15s;
+}
+.dash-btn:hover { background:rgba(255,255,255,.25); }
+.dash-btn.danger { background:rgba(220,80,80,.25); border-color:rgba(220,80,80,.4); }
+
+.dash-body { max-width:900px; margin:0 auto; padding:20px 16px 48px; }
+
+/* Stats bar */
+.stats-bar {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+  margin-bottom:20px;
+}
+.stat-card {
+  background:var(--wh); border:1.5px solid #dde8dd;
+  border-radius:var(--r); padding:14px 16px; text-align:center;
+}
+.stat-num {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:32px; font-weight:700; color:var(--g); line-height:1;
+}
+.stat-lbl { font-size:11px; color:var(--gm); margin-top:4px; font-weight:600;
+  letter-spacing:.5px; text-transform:uppercase; }
+
+/* Refresh info */
+.refresh-info {
+  font-size:12px; color:var(--gm); text-align:right;
+  margin-bottom:14px;
+}
+
+/* Grid portieri */
+.players-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px;
+}
+
+/* Player card */
+.player-card {
+  background:var(--wh); border-radius:var(--r);
+  border:1.5px solid #dde8dd; overflow:hidden;
+  transition:box-shadow .2s;
+}
+.player-card:hover { box-shadow:0 4px 20px rgba(26,122,60,.12); }
+
+.player-hdr {
+  padding:14px 16px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.player-name {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:20px; font-weight:700; color:var(--dk);
+}
+.player-perc {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:24px; font-weight:700;
+}
+.perc-100 { color:var(--g); }
+.perc-mid { color:#e6940a; }
+.perc-low { color:#c0392b; }
+
+.prog-bar-wrap {
+  height:6px; background:#e8f0e8; margin:0 16px 12px;
+  border-radius:3px; overflow:hidden;
+}
+.prog-bar {
+  height:100%; border-radius:3px;
+  transition:width .6s ease;
+}
+.prog-bar.c100 { background:var(--gl); }
+.prog-bar.cmid { background:#f0a500; }
+.prog-bar.clow { background:#e74c3c; }
+
+/* Session pills */
+.sessions-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:6px;
+  padding:0 16px 12px;
+}
+.sess-pill {
+  border-radius:6px; padding:6px 4px; text-align:center;
+  font-size:10px; font-weight:600; line-height:1.3;
+}
+.sess-pill.done {
+  background:var(--gp); color:var(--gd);
+}
+.sess-pill.todo {
+  background:var(--gr); color:#bbb;
+}
+.sess-pill .sess-label { display:block; font-size:9px; opacity:.7; }
+.sess-pill .sess-date  { display:block; font-size:10px; }
+
+/* Note */
+.notes-section { border-top:1px solid #eee; }
+.notes-toggle {
+  width:100%; background:none; border:none;
+  padding:10px 16px; font-size:12px; font-weight:600;
+  color:var(--gm); cursor:pointer; text-align:left;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.notes-toggle:hover { background:var(--gr); }
+.notes-body { padding:0 16px 12px; display:none; }
+.notes-body.open { display:block; }
+.note-row { margin-bottom:6px; }
+.note-row-lbl { font-size:10px; font-weight:600; color:var(--gm); }
+.note-row-text { font-size:12px; color:var(--dk); line-height:1.4; }
+
+/* Test */
+.test-row {
+  border-top:1px solid #eee;
+  padding:10px 16px; font-size:11px; color:var(--gm);
+}
+.test-row b { color:var(--dk); }
+
+/* Update time */
+.player-footer {
+  border-top:1px solid #eee;
+  padding:8px 16px; font-size:11px; color:var(--gm);
+}
+
+/* Empty */
+.empty-state {
+  text-align:center; padding:60px 20px; color:var(--gm);
+}
+.empty-state .big { font-size:48px; margin-bottom:12px; }
+.empty-state p { font-size:14px; }
+
+/* Loading */
+.loading {
+  text-align:center; padding:60px 20px;
+}
+.spinner {
+  width:40px; height:40px; border:3px solid var(--gp);
+  border-top-color:var(--g); border-radius:50%;
+  animation:spin .8s linear infinite; margin:0 auto 16px;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+@media(max-width:500px) {
+  .stats-bar { grid-template-columns:repeat(3,1fr); gap:8px; }
+  .stat-num { font-size:24px; }
+  .stat-lbl { font-size:10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ─────────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">GK</div>
+    <h1>Dashboard Mister</h1>
+    <p>Inserisci il PIN per accedere</p>
+    <div class="pin-dots" id="pin-dots">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="pin-pad" id="pin-pad"></div>
+    <p id="pin-error"></p>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ─────────────────────────────────────────── -->
+<div id="dashboard">
+  <nav class="dash-nav">
+    <div class="dash-nav-inner">
+      <h1>⚽ Dashboard Mister</h1>
+      <div class="dash-nav-actions">
+        <button class="dash-btn" onclick="loadData()">↻ Aggiorna</button>
+        <button class="dash-btn danger" onclick="logout()">Esci</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dash-body">
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-card"><div class="stat-num" id="stat-tot">—</div><div class="stat-lbl">Portieri</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-done">—</div><div class="stat-lbl">Completato</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-avg">—</div><div class="stat-lbl">Media %</div></div>
+    </div>
+    <div class="refresh-info" id="refresh-info"></div>
+    <div id="players-container">
+      <div class="loading"><div class="spinner"></div><p>Caricamento dati...</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIQ_gHDsOEnBLFYysanLaVwHBcauXaCR347X2S5cwEO8idn-gX6X7K61Tphax8NO0E/exec';
+const PIN_CORRECT = '1414'; // ← cambiate questo PIN
+
+// ── PIN ──────────────────────────────────────────────────
+let pinEntry = '';
+
+function buildPinPad() {
+  const pad = document.getElementById('pin-pad');
+  const keys = ['1','2','3','4','5','6','7','8','9','','0','⌫'];
+  keys.forEach(k => {
+    const btn = document.createElement('button');
+    btn.className = 'pin-btn' + (k==='' ? ' empty' : '') + (k==='⌫' ? ' del' : '');
+    btn.textContent = k;
+    if (k !== '') btn.addEventListener('click', () => pinPress(k));
+    pad.appendChild(btn);
+  });
+}
+
+function pinPress(key) {
+  const err = document.getElementById('pin-error');
+  err.textContent = '';
+  if (key === '⌫') {
+    pinEntry = pinEntry.slice(0,-1);
+  } else if (pinEntry.length < 4) {
+    pinEntry += key;
+  }
+  updateDots();
+  if (pinEntry.length === 4) checkPin();
+}
+
+function updateDots() {
+  document.querySelectorAll('#pin-dots span').forEach((s,i) => {
+    s.classList.toggle('filled', i < pinEntry.length);
+  });
+}
+
+function checkPin() {
+  if (pinEntry === PIN_CORRECT) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('pin-error').textContent = '⚠️ PIN errato, riprova';
+    pinEntry = '';
+    updateDots();
+    setTimeout(() => document.getElementById('pin-error').textContent = '', 2000);
+  }
+}
+
+function logout() {
+  pinEntry = '';
+  updateDots();
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// ── DATA ─────────────────────────────────────────────────
+async function loadData() {
+  document.getElementById('players-container').innerHTML =
+    '<div class="loading"><div class="spinner"></div><p>Caricamento dati...</p></div>';
+
+  try {
+    const res = await fetch(SCRIPT_URL, { redirect:'follow' });
+    const json = await res.json();
+    if (!json.ok) throw new Error('Risposta non valida');
+    renderDashboard(json.players, json.ts);
+  } catch(err) {
+    document.getElementById('players-container').innerHTML =
+      `<div class="empty-state">
+        <div class="big">⚠️</div>
+        <p>Impossibile caricare i dati.<br>
+        Controlla che il doGet sia aggiunto all'Apps Script<br>e che la distribuzione sia aggiornata.</p>
+       </div>`;
+  }
+}
+
+function percNum(p) {
+  return parseInt((p||'0').replace('%','')) || 0;
+}
+
+function percClass(n) {
+  if (n >= 100) return '100';
+  if (n >= 50)  return 'mid';
+  return 'low';
+}
+
+function sessBlock(label, date) {
+  if (date) {
+    return `<div class="sess-pill done">
+      <span class="sess-label">${label}</span>
+      <span class="sess-date">✓ ${date.split(' ')[0]}</span>
+    </div>`;
+  }
+  return `<div class="sess-pill todo">
+    <span class="sess-label">${label}</span>
+    <span class="sess-date">—</span>
+  </div>`;
+}
+
+function hasNotes(p) {
+  return [p.nS1a1,p.nS1a2,p.nS1a3,p.nS2a1,p.nS2a2,p.nS2a3].some(n=>n.trim());
+}
+
+function noteRow(label, text) {
+  if (!text || !text.trim()) return '';
+  return `<div class="note-row">
+    <div class="note-row-lbl">${label}</div>
+    <div class="note-row-text">${text}</div>
+  </div>`;
+}
+
+let notesOpenState = {};
+
+function toggleNotes(id) {
+  notesOpenState[id] = !notesOpenState[id];
+  const body = document.getElementById('nb-' + id);
+  const arrow = document.getElementById('na-' + id);
+  if (body) body.classList.toggle('open', !!notesOpenState[id]);
+  if (arrow) arrow.textContent = notesOpenState[id] ? '▲' : '▾';
+}
+
+function renderDashboard(players, ts) {
+  // Sort by %
+  players.sort((a,b) => percNum(b.perc) - percNum(a.perc));
+
+  // Stats
+  const tot  = players.length;
+  const done = players.filter(p => percNum(p.perc) >= 100).length;
+  const avg  = tot ? Math.round(players.reduce((s,p) => s + percNum(p.perc), 0) / tot) : 0;
+  document.getElementById('stat-tot').textContent  = tot;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-avg').textContent  = avg + '%';
+  document.getElementById('refresh-info').textContent = ts ? 'Aggiornato: ' + ts : '';
+
+  if (!players.length) {
+    document.getElementById('players-container').innerHTML =
+      '<div class="empty-state"><div class="big">📋</div><p>Nessun portiere ha ancora inviato dati.</p></div>';
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'players-grid';
+
+  players.forEach((p, i) => {
+    const pn = percNum(p.perc);
+    const pc = percClass(pn);
+    const showNotes = hasNotes(p);
+    const uid = 'p' + i;
+
+    const card = document.createElement('div');
+    card.className = 'player-card';
+    card.innerHTML = `
+      <div class="player-hdr">
+        <div class="player-name">${p.nome}</div>
+        <div class="player-perc perc-${pc}">${pn}%</div>
+      </div>
+      <div class="prog-bar-wrap">
+        <div class="prog-bar c${pc}" style="width:${Math.min(pn,100)}%"></div>
+      </div>
+      <div class="sessions-grid">
+        ${sessBlock('S1·A1', p.s1a1)}
+        ${sessBlock('S1·A2', p.s1a2)}
+        ${sessBlock('S1·A3', p.s1a3)}
+        ${sessBlock('S2·A1', p.s2a1)}
+        ${sessBlock('S2·A2', p.s2a2)}
+        ${sessBlock('S2·A3', p.s2a3)}
+      </div>
+      ${p.test ? `<div class="test-row"><b>Test:</b> ${p.test}${p.testAgg ? ' · <i>'+p.testAgg+'</i>' : ''}</div>` : ''}
+      ${showNotes ? `
+      <div class="notes-section">
+        <button class="notes-toggle" onclick="toggleNotes('${uid}')">
+          📝 Note portiere
+          <span id="na-${uid}">▾</span>
+        </button>
+        <div class="notes-body" id="nb-${uid}">
+          ${noteRow('S1·A1', p.nS1a1)}
+          ${noteRow('S1·A2', p.nS1a2)}
+          ${noteRow('S1·A3', p.nS1a3)}
+          ${noteRow('S2·A1', p.nS2a1)}
+          ${noteRow('S2·A2', p.nS2a2)}
+          ${noteRow('S2·A3', p.nS2a3)}
+        </div>
+      </div>` : ''}
+      ${p.agg ? `<div class="player-footer">Ultimo aggiornamento: ${p.agg}</div>` : ''}
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('players-container').innerHTML = '';
+  document.getElementById('players-container').appendChild(grid);
+}
+
+// ── INIT ─────────────────────────────────────────────────
+buildPinPad();
+</script>
+</body>
+</html>
