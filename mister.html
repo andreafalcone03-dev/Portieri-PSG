@@ -282,7 +282,7 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:#f0f4f1; co
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGmmpJBE-EeFZ1rJRkidK-Jv3CPvV2rfPj-JiTnb9UePIFckP0avJNW-0i7uWRj932/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8hdQW2oQ6r_UjDzTgGwT6MIzHl1AZv-z17-hpyBI-CKcDiwOK-RO0GDX73Cx3S8GQ/exec';
 const PINS = {
   '2003': 'Andrea',
   '1990': 'Alessio'
@@ -345,23 +345,47 @@ function logout() {
 }
 
 // ── DATA ─────────────────────────────────────────────────
-async function loadData() {
+function loadData() {
   document.getElementById('players-container').innerHTML =
     '<div class="loading"><div class="spinner"></div><p>Caricamento dati...</p></div>';
 
-  try {
-    const res = await fetch(SCRIPT_URL, { redirect:'follow' });
-    const json = await res.json();
-    if (!json.ok) throw new Error('Risposta non valida');
-    renderDashboard(json.players, json.ts);
-  } catch(err) {
+  // Rimuovi script JSONP precedente se esiste
+  const old = document.getElementById('jsonp-script');
+  if (old) old.remove();
+
+  // Timeout di sicurezza
+  const timer = setTimeout(() => {
     document.getElementById('players-container').innerHTML =
       `<div class="empty-state">
         <div class="big">⚠️</div>
-        <p>Impossibile caricare i dati.<br>
-        Controlla che il doGet sia aggiunto all'Apps Script<br>e che la distribuzione sia aggiornata.</p>
+        <p>Timeout — controlla la connessione<br>e che il doGet sia distribuito correttamente.</p>
        </div>`;
-  }
+  }, 10000);
+
+  // Callback globale che verrà chiamata dallo script JSONP
+  window._misterCb = function(json) {
+    clearTimeout(timer);
+    if (json && json.ok) {
+      renderDashboard(json.players, json.ts);
+    } else {
+      document.getElementById('players-container').innerHTML =
+        '<div class="empty-state"><div class="big">⚠️</div><p>Dati non validi ricevuti.</p></div>';
+    }
+  };
+
+  // Carica via tag <script> — aggira CORS
+  const script = document.createElement('script');
+  script.id = 'jsonp-script';
+  script.src = SCRIPT_URL + '?callback=_misterCb';
+  script.onerror = () => {
+    clearTimeout(timer);
+    document.getElementById('players-container').innerHTML =
+      `<div class="empty-state">
+        <div class="big">⚠️</div>
+        <p>Impossibile raggiungere il server.<br>Controlla che la distribuzione sia impostata su "Chiunque".</p>
+       </div>`;
+  };
+  document.body.appendChild(script);
 }
 
 function percNum(p) {
