@@ -263,6 +263,7 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:#f0f4f1; co
       <h1>⚽ Dashboard Mister</h1>
       <div class="dash-nav-actions">
         <button class="dash-btn" onclick="loadData()">↻ Aggiorna</button>
+        <button class="dash-btn" onclick="testConn()" style="background:#7c5cbf">🔍 Test</button>
         <button class="dash-btn danger" onclick="logout()">Esci</button>
       </div>
     </div>
@@ -337,6 +338,11 @@ function checkPin() {
   }
 }
 
+function testConn() {
+  // Apre la URL diretta in un tab per vedere cosa risponde Apps Script
+  window.open(SCRIPT_URL + '?callback=_misterCb', '_blank');
+}
+
 function logout() {
   pinEntry = '';
   updateDots();
@@ -358,7 +364,7 @@ function loadData() {
     document.getElementById('players-container').innerHTML =
       `<div class="empty-state">
         <div class="big">⚠️</div>
-        <p>Timeout — controlla la connessione<br>e che il doGet sia distribuito correttamente.</p>
+        <p><b>Timeout</b> — Apps Script non ha risposto.<br>Premi <b>🔍 Test</b> per vedere la risposta grezza.<br>Verifica che il doGet restituisca JSONP e sia distribuito come <b>Chiunque</b>.</p>
        </div>`;
   }, 10000);
 
