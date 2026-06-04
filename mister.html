@@ -395,7 +395,11 @@ function loadData() {
 }
 
 function percNum(p) {
-  return parseInt((p||'0').replace('%','')) || 0;
+  if (p === null || p === undefined || p === '') return 0;
+  // Numero decimale tipo 0.17 → moltiplica per 100
+  if (typeof p === 'number') return Math.round(p * 100);
+  // Stringa tipo "17%" → rimuovi % e converti
+  return parseInt(String(p).replace('%','')) || 0;
 }
 
 function percClass(n) {
