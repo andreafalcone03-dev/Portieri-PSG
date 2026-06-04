@@ -1689,7 +1689,7 @@ function inviaDatiAlMister(percentuale, eserciziCompletatiStr) {
             timestamps[sid] = localStorage.getItem('ts-' + sid) || '';
             notes[sid] = localStorage.getItem('note-' + sid) || '';
         });
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbzGmmpJBE-EeFZ1rJRkidK-Jv3CPvV2rfPj-JiTnb9UePIFckP0avJNW-0i7uWRj932/exec";
+        const webAppUrl = "https://script.google.com/macros/s/AKfycby8hdQW2oQ6r_UjDzTgGwT6MIzHl1AZv-z17-hpyBI-CKcDiwOK-RO0GDX73Cx3S8GQ/exec";
         fetch(webAppUrl, {
             method: 'POST',
             mode: 'no-cors',
@@ -1718,7 +1718,7 @@ function inviaTestAlMister() {
     const t5 = document.getElementById('test5-res').value.trim() || "-";
     const t6 = document.getElementById('test6-res').value.trim() || "-";
     const stringaTest = `T1: ${t1} | T2: ${t2} | T3: ${t3} | T4: ${t4} | T5: ${t5} | T6: ${t6}`;
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbzGmmpJBE-EeFZ1rJRkidK-Jv3CPvV2rfPj-JiTnb9UePIFckP0avJNW-0i7uWRj932/exec";
+    const webAppUrl = "https://script.google.com/macros/s/AKfycby8hdQW2oQ6r_UjDzTgGwT6MIzHl1AZv-z17-hpyBI-CKcDiwOK-RO0GDX73Cx3S8GQ/exec";
     fetch(webAppUrl, {
         method: 'POST',
         mode: 'no-cors',
