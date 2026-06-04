@@ -8,241 +8,283 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ── VARIABILI & RESET ─────────────────────────────────── */
 :root {
-  --g:    #1a7a3c;
-  --gl:   #26a653;
-  --gd:   #1a5c30;
-  --gp:   #e8f5ee;
-  --acc:  #f5c518;
-  --dk:   #0d0d0d;
-  --wh:   #ffffff;
-  --gr:   #f4f4f4;
-  --gm:   #777;
+  --g:    #1a7a3c; --gl:#26a653; --gd:#1a5c30; --gp:#e8f5ee;
+  --dk:   #0d0d0d; --wh:#ffffff; --gr:#f4f4f4; --gm:#777;
+  --bg:   #f0f4f1; --card-border:#dde8dd;
   --r:    10px;
 }
+[data-dark] {
+  --g:#26a653; --gl:#33cc66; --gd:#1aaa50; --gp:#0a2015;
+  --dk:#e8e8e8; --wh:#1e1e1e; --gr:#2a2a2a; --gm:#888;
+  --bg:#111; --card-border:#333;
+}
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html,body { height:100%; font-family:'Barlow',sans-serif; background:#f0f4f1; color:var(--dk); }
+html,body { height:100%; font-family:'Barlow',sans-serif; background:var(--bg); color:var(--dk); transition:background .3s,color .3s; }
 
-/* ── LOGIN ─────────────────────────────────────────────── */
-#login-screen {
-  min-height:100vh;
-  display:flex; align-items:center; justify-content:center;
-  background: linear-gradient(145deg, #1a5c30 0%, #1a7a3c 60%, #26a653 100%);
-  padding:20px;
-}
-.login-card {
-  background:var(--wh); border-radius:20px;
-  padding:36px 32px 28px; width:100%; max-width:340px;
-  text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.25);
-}
-.login-logo {
-  width:64px; height:64px; border-radius:16px;
-  background:var(--g); color:white;
-  font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:700;
-  display:flex; align-items:center; justify-content:center;
-  margin:0 auto 16px;
-}
-.login-card h1 {
-  font-family:'Barlow Condensed',sans-serif; font-size:24px;
-  font-weight:700; color:var(--g); margin-bottom:4px;
-}
-.login-card p { font-size:13px; color:var(--gm); margin-bottom:24px; }
-
-.pin-dots {
-  display:flex; gap:12px; justify-content:center; margin-bottom:24px;
-}
-.pin-dots span {
-  width:14px; height:14px; border-radius:50%;
-  border:2px solid var(--g); background:transparent;
-  transition:background .15s;
-}
+/* ── LOGIN ────────────────────────────────────────────── */
+#login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(145deg,#1a5c30 0%,#1a7a3c 60%,#26a653 100%); padding:20px; }
+.login-card { background:var(--wh); border-radius:20px; padding:36px 32px 28px; width:100%; max-width:340px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.25); }
+.login-logo { width:64px; height:64px; border-radius:16px; background:var(--g); color:white; font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:700; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+.login-card h1 { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:700; color:var(--g); margin-bottom:4px; }
+.login-card > p { font-size:13px; color:var(--gm); margin-bottom:24px; }
+.pin-dots { display:flex; gap:12px; justify-content:center; margin-bottom:24px; }
+.pin-dots span { width:14px; height:14px; border-radius:50%; border:2px solid var(--g); background:transparent; transition:background .15s; }
 .pin-dots span.filled { background:var(--g); }
-
-.pin-pad {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
-  margin-bottom:12px;
-}
-.pin-btn {
-  height:54px; border:1.5px solid #e0e0e0; border-radius:10px;
-  background:var(--wh); font-size:22px; font-weight:500;
-  cursor:pointer; transition:background .1s, transform .1s;
-  display:flex; align-items:center; justify-content:center;
-}
-.pin-btn:active { background:#f0f0f0; transform:scale(.95); }
-.pin-btn.del { font-size:18px; color:var(--gm); }
+.pin-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px; }
+.pin-btn { height:54px; border:1.5px solid #e0e0e0; border-radius:10px; background:var(--wh); font-size:22px; font-weight:500; cursor:pointer; transition:background .1s,transform .1s; display:flex; align-items:center; justify-content:center; color:var(--dk); }
+.pin-btn:active { background:var(--gr); transform:scale(.95); }
+.pin-btn.del   { font-size:18px; color:var(--gm); }
 .pin-btn.empty { pointer-events:none; border-color:transparent; }
-#pin-error {
-  font-size:12px; color:#e74c3c; min-height:18px;
-  margin-top:8px;
-}
+#pin-error { font-size:12px; color:#e74c3c; min-height:18px; margin-top:8px; }
 
-/* ── DASHBOARD ──────────────────────────────────────────── */
+/* ── DASHBOARD ────────────────────────────────────────── */
 #dashboard { display:none; min-height:100vh; }
-
-.dash-nav {
-  background:var(--g); color:white;
-  padding:env(safe-area-inset-top) 20px 0;
-  position:sticky; top:0; z-index:50;
-}
-.dash-nav-inner {
-  display:flex; align-items:center; justify-content:space-between;
-  height:52px;
-}
-.dash-nav h1 {
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:22px; font-weight:700; letter-spacing:.3px;
-}
-.dash-nav-actions { display:flex; gap:8px; }
-.dash-btn {
-  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25);
-  color:white; border-radius:8px; padding:6px 12px;
-  font-size:12px; font-weight:600; cursor:pointer;
-  transition:background .15s;
-}
-.dash-btn:hover { background:rgba(255,255,255,.25); }
+.dash-nav { background:var(--g); color:white; padding:env(safe-area-inset-top) 20px 0; position:sticky; top:0; z-index:100; }
+.dash-nav-inner { display:flex; align-items:center; justify-content:space-between; height:52px; gap:8px; }
+.dash-nav h1 { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:700; letter-spacing:.3px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.dash-nav-actions { display:flex; gap:6px; align-items:center; flex-shrink:0; }
+.auto-badge { font-size:10px; color:rgba(255,255,255,.55); }
+.dash-btn { background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); color:white; border-radius:8px; padding:6px 10px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; white-space:nowrap; }
+.dash-btn:hover { background:rgba(255,255,255,.28); }
 .dash-btn.danger { background:rgba(220,80,80,.25); border-color:rgba(220,80,80,.4); }
+.dash-btn.icon   { padding:6px 9px; font-size:15px; }
 
-.dash-body { max-width:900px; margin:0 auto; padding:20px 16px 48px; }
+.dash-body { max-width:980px; margin:0 auto; padding:20px 16px 60px; }
 
-/* Stats bar */
-.stats-bar {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
-  margin-bottom:20px;
-}
-.stat-card {
-  background:var(--wh); border:1.5px solid #dde8dd;
-  border-radius:var(--r); padding:14px 16px; text-align:center;
-}
-.stat-num {
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:32px; font-weight:700; color:var(--g); line-height:1;
-}
-.stat-lbl { font-size:11px; color:var(--gm); margin-top:4px; font-weight:600;
-  letter-spacing:.5px; text-transform:uppercase; }
+/* ── STATS ────────────────────────────────────────────── */
+.stats-bar { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:12px; }
+.stat-card { background:var(--wh); border:1.5px solid var(--card-border); border-radius:var(--r); padding:14px 16px; text-align:center; transition:background .3s; }
+.stat-num  { font-family:'Barlow Condensed',sans-serif; font-size:32px; font-weight:700; color:var(--g); line-height:1; }
+.stat-lbl  { font-size:11px; color:var(--gm); margin-top:4px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; }
 
-/* Refresh info */
-.refresh-info {
-  font-size:12px; color:var(--gm); text-align:right;
-  margin-bottom:14px;
-}
+/* ── DISTRIBUZIONE ────────────────────────────────────── */
+.distrib-wrap { background:var(--wh); border:1.5px solid var(--card-border); border-radius:var(--r); padding:12px 16px; margin-bottom:12px; }
+.distrib-title { font-size:10px; font-weight:700; color:var(--gm); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+.distrib-bar { display:flex; height:16px; border-radius:8px; overflow:hidden; gap:2px; margin-bottom:6px; }
+.distrib-seg { transition:flex .5s ease; min-width:0; border-radius:4px; }
+.distrib-seg.d0   { background:#e74c3c; }
+.distrib-seg.d25  { background:#f0a500; }
+.distrib-seg.d50  { background:#3498db; }
+.distrib-seg.d100 { background:var(--gl); }
+.distrib-seg.empty-bar { background:var(--gr); flex:1; }
+.distrib-legend { display:flex; gap:12px; flex-wrap:wrap; }
+.dl-item { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--gm); }
+.dl-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 
-/* Grid portieri */
-.players-grid {
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:14px;
-}
+/* ── PODIO ────────────────────────────────────────────── */
+.podium-section { margin-bottom:16px; }
+.podium-hdr { display:flex; align-items:center; gap:8px; padding:8px 0 8px 2px; cursor:pointer; user-select:none; }
+.podium-hdr-title { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; color:var(--gm); flex:1; }
+.podium-hdr .sec-arrow { font-size:12px; color:var(--gm); transition:transform .2s; }
+.podium-hdr .sec-arrow.closed { transform:rotate(-90deg); }
+/* Podio visivo: ordine 2-1-3 con gradini */
+.podium-stage { display:flex; align-items:flex-end; justify-content:center; gap:6px; }
+.podium-col { display:flex; flex-direction:column; align-items:center; flex:1; min-width:0; cursor:pointer; }
+.podium-col:hover .podium-card { box-shadow:0 6px 20px rgba(0,0,0,.15); transform:translateY(-3px); }
+.podium-card { width:100%; background:var(--wh); border-radius:12px 12px 0 0; text-align:center; padding:14px 8px 10px; border:2px solid transparent; transition:box-shadow .2s,transform .2s; }
+.podium-card.p1 { background:linear-gradient(160deg,#fffbe6,#fff8cc); border-color:#f5c518; }
+.podium-card.p2 { background:linear-gradient(160deg,#f5f5f5,#ececec); border-color:#b0b0b0; }
+.podium-card.p3 { background:linear-gradient(160deg,#fff3e8,#ffe8d0); border-color:#cd8f52; }
+[data-dark] .podium-card.p1 { background:linear-gradient(160deg,#2a2200,#1e1800); }
+[data-dark] .podium-card.p2 { background:linear-gradient(160deg,#222,#1a1a1a); }
+[data-dark] .podium-card.p3 { background:linear-gradient(160deg,#251500,#1a0e00); }
+.podium-medal { font-size:26px; line-height:1; margin-bottom:6px; }
+.podium-avatar { border-radius:50%; color:white; font-family:'Barlow Condensed',sans-serif; font-weight:700; display:flex; align-items:center; justify-content:center; margin:0 auto 6px; transition:box-shadow .2s; }
+.podium-col.rank1 .podium-avatar { width:52px; height:52px; font-size:20px; box-shadow:0 0 0 3px #f5c518,0 0 0 5px #fff8cc; }
+.podium-col.rank2 .podium-avatar { width:40px; height:40px; font-size:16px; box-shadow:0 0 0 2px #b0b0b0; }
+.podium-col.rank3 .podium-avatar { width:40px; height:40px; font-size:16px; box-shadow:0 0 0 2px #cd8f52; }
+.podium-name { font-size:12px; font-weight:700; color:var(--dk); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%; }
+.podium-col.rank1 .podium-name { font-size:14px; }
+.podium-perc { font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--g); margin-top:2px; }
+.podium-col.rank1 .podium-perc { font-size:22px; }
+.podium-col.rank2 .podium-perc,.podium-col.rank3 .podium-perc { font-size:17px; }
+/* Gradini */
+.podium-step { width:100%; border-radius:0 0 4px 4px; display:flex; align-items:center; justify-content:center; }
+.podium-col.rank1 .podium-step { height:48px; background:#f5c518; }
+.podium-col.rank2 .podium-step { height:30px; background:#b0b0b0; }
+.podium-col.rank3 .podium-step { height:18px; background:#cd8f52; }
+.podium-rank-num { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; color:white; text-shadow:0 1px 2px rgba(0,0,0,.25); }
 
-/* Player card */
-.player-card {
-  background:var(--wh); border-radius:var(--r);
-  border:1.5px solid #dde8dd; overflow:hidden;
-  transition:box-shadow .2s;
+/* ── SEARCH ───────────────────────────────────────────── */
+.search-row { margin-bottom:10px; }
+.search-input {
+  width:100%; padding:9px 14px 9px 36px; border-radius:20px;
+  border:1.5px solid var(--card-border); background:var(--wh); color:var(--dk);
+  font-size:13px; font-family:'Barlow',sans-serif; outline:none; transition:border-color .2s;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:12px center;
 }
-.player-card:hover { box-shadow:0 4px 20px rgba(26,122,60,.12); }
+.search-input:focus { border-color:var(--g); }
+.search-input::placeholder { color:var(--gm); }
 
-.player-hdr {
-  padding:14px 16px 10px;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.player-name {
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:20px; font-weight:700; color:var(--dk);
-}
-.player-perc {
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:24px; font-weight:700;
-}
+/* ── TOOLBAR ──────────────────────────────────────────── */
+.toolbar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.filter-bar { display:flex; gap:6px; flex-wrap:wrap; }
+.flt-btn { border:1.5px solid var(--card-border); background:var(--wh); color:var(--gm); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; }
+.flt-btn.active { background:var(--g); border-color:var(--g); color:white; }
+.toolbar-right { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.sort-bar { display:flex; gap:6px; align-items:center; }
+.sort-bar span { font-size:11px; color:var(--gm); font-weight:600; }
+.srt-btn { border:1.5px solid var(--card-border); background:var(--wh); color:var(--gm); border-radius:20px; padding:5px 12px; font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; }
+.srt-btn.active { background:var(--gd); border-color:var(--gd); color:white; }
+.export-btn { border:1.5px solid var(--card-border); background:var(--wh); color:var(--gm); border-radius:20px; padding:5px 14px; font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; }
+.export-btn:hover { background:var(--gr); }
+
+.refresh-info { font-size:12px; color:var(--gm); text-align:right; margin-bottom:14px; }
+
+/* ── SEZIONI GRUPPO ───────────────────────────────────── */
+.group-section { margin-bottom:20px; }
+.group-hdr { display:flex; align-items:center; gap:10px; padding:8px 14px; border-radius:10px; background:var(--wh); border:1.5px solid var(--card-border); cursor:pointer; user-select:none; margin-bottom:10px; transition:background .15s; }
+.group-hdr:hover { background:var(--gr); }
+.group-hdr.unassigned { border-style:dashed; border-color:#aaa; }
+.group-hdr.unassigned .group-hdr-name { color:var(--gm); }
+.group-hdr-icon { font-size:16px; }
+.group-hdr-name { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; color:var(--gd); flex:1; }
+.group-hdr-count { font-size:12px; font-weight:600; color:white; background:var(--g); border-radius:10px; padding:2px 9px; }
+.group-hdr-count.zero { background:#aaa; }
+.sec-arrow { font-size:13px; color:var(--gm); transition:transform .2s; }
+.sec-arrow.closed { transform:rotate(-90deg); }
+.group-body.hidden { display:none; }
+
+/* ── GRID CARDS ───────────────────────────────────────── */
+.players-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(275px,1fr)); gap:14px; }
+
+/* ── CARD ─────────────────────────────────────────────── */
+.player-card { background:var(--wh); border-radius:var(--r); border:1.5px solid var(--card-border); overflow:hidden; transition:box-shadow .2s,background .3s; }
+.player-card:hover { box-shadow:0 4px 20px rgba(26,122,60,.13); }
+
+.player-hdr { padding:14px 16px 10px; display:flex; align-items:center; gap:12px; cursor:pointer; }
+.player-hdr:hover .player-name { color:var(--g); }
+.avatar { width:40px; height:40px; border-radius:50%; color:white; font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; letter-spacing:.5px; }
+.player-info { flex:1; min-width:0; }
+.player-name { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:700; color:var(--dk); line-height:1; transition:color .15s; display:flex; align-items:center; gap:6px; }
+.note-mister-dot { font-size:12px; }
+.player-meta { display:flex; align-items:center; gap:6px; margin-top:3px; }
+.sess-badge { font-size:10px; font-weight:600; padding:2px 7px; border-radius:10px; background:var(--gr); color:var(--gm); }
+.sess-badge.full { background:var(--gp); color:var(--gd); }
+.sess-badge.half { background:#fff3e0; color:#b35900; }
+.player-perc { font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:700; flex-shrink:0; }
 .perc-100 { color:var(--g); }
 .perc-mid { color:#e6940a; }
 .perc-low { color:#c0392b; }
 
-.prog-bar-wrap {
-  height:6px; background:#e8f0e8; margin:0 16px 12px;
-  border-radius:3px; overflow:hidden;
-}
-.prog-bar {
-  height:100%; border-radius:3px;
-  transition:width .6s ease;
-}
+.prog-bar-wrap { height:6px; background:var(--gp); margin:0 16px 12px; border-radius:3px; overflow:hidden; }
+[data-dark] .prog-bar-wrap { background:#0a2015; }
+.prog-bar { height:100%; border-radius:3px; transition:width .6s ease; }
 .prog-bar.c100 { background:var(--gl); }
 .prog-bar.cmid { background:#f0a500; }
 .prog-bar.clow { background:#e74c3c; }
 
-/* Session pills */
-.sessions-grid {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:6px;
-  padding:0 16px 12px;
-}
-.sess-pill {
-  border-radius:6px; padding:6px 4px; text-align:center;
-  font-size:10px; font-weight:600; line-height:1.3;
-}
-.sess-pill.done {
-  background:var(--gp); color:var(--gd);
-}
-.sess-pill.todo {
-  background:var(--gr); color:#bbb;
-}
+.sessions-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:0 16px 12px; }
+.sess-pill { border-radius:6px; padding:6px 4px; text-align:center; font-size:10px; font-weight:600; line-height:1.3; }
+.sess-pill.done { background:var(--gp); color:var(--gd); }
+.sess-pill.todo { background:var(--gr); color:#bbb; }
+.sess-pill.next { background:#fff8e1; color:#b35900; border:1.5px dashed #f0a500; animation:pulse-border 1.5s ease-in-out infinite; }
+[data-dark] .sess-pill.next { background:#2a1f00; color:#f0a500; }
+@keyframes pulse-border { 0%,100%{opacity:1} 50%{opacity:.6} }
 .sess-pill .sess-label { display:block; font-size:9px; opacity:.7; }
 .sess-pill .sess-date  { display:block; font-size:10px; }
 
-/* Note */
-.notes-section { border-top:1px solid #eee; }
-.notes-toggle {
-  width:100%; background:none; border:none;
-  padding:10px 16px; font-size:12px; font-weight:600;
-  color:var(--gm); cursor:pointer; text-align:left;
-  display:flex; align-items:center; justify-content:space-between;
-}
+.test-section { border-top:1px solid var(--card-border); padding:10px 16px 12px; }
+.test-label { font-size:10px; font-weight:700; color:var(--gm); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.test-pills { display:flex; flex-wrap:wrap; gap:5px; }
+.test-pill { display:flex; flex-direction:column; align-items:center; background:var(--gr); border-radius:8px; padding:5px 8px; min-width:46px; }
+.test-pill.dash { opacity:.45; }
+.tp-lbl { font-size:9px; font-weight:700; color:var(--gm); text-transform:uppercase; }
+.tp-val { font-size:13px; font-weight:700; color:var(--dk); font-family:'Barlow Condensed',sans-serif; line-height:1.1; margin-top:1px; }
+
+.notes-section { border-top:1px solid var(--card-border); }
+.notes-toggle { width:100%; background:none; border:none; padding:10px 16px; font-size:12px; font-weight:600; color:var(--gm); cursor:pointer; text-align:left; display:flex; align-items:center; justify-content:space-between; }
 .notes-toggle:hover { background:var(--gr); }
 .notes-body { padding:0 16px 12px; display:none; }
 .notes-body.open { display:block; }
 .note-row { margin-bottom:6px; }
-.note-row-lbl { font-size:10px; font-weight:600; color:var(--gm); }
+.note-row-lbl  { font-size:10px; font-weight:600; color:var(--gm); }
 .note-row-text { font-size:12px; color:var(--dk); line-height:1.4; }
 
-/* Test */
-.test-row {
-  border-top:1px solid #eee;
-  padding:10px 16px; font-size:11px; color:var(--gm);
-}
-.test-row b { color:var(--dk); }
+.player-footer { border-top:1px solid var(--card-border); padding:8px 16px; display:flex; align-items:center; gap:8px; }
+.fresh-dot  { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.dot-fresh  { background:#1a7a3c; }
+.dot-recent { background:#e6940a; }
+.dot-stale  { background:#c0392b; }
+.fresh-label { font-size:11px; color:var(--gm); flex:1; }
+.detail-btn { font-size:11px; color:var(--g); font-weight:600; cursor:pointer; background:none; border:none; padding:0; }
+.detail-btn:hover { text-decoration:underline; }
 
-/* Update time */
-.player-footer {
-  border-top:1px solid #eee;
-  padding:8px 16px; font-size:11px; color:var(--gm);
-}
+.group-select-row { border-top:1px solid var(--card-border); padding:8px 16px; display:flex; align-items:center; gap:8px; }
+.group-select-row label { font-size:11px; color:var(--gm); font-weight:600; flex-shrink:0; }
+.group-sel { flex:1; font-size:11px; font-family:'Barlow',sans-serif; border:1.5px solid var(--card-border); border-radius:8px; padding:4px 8px; background:var(--wh); color:var(--dk); cursor:pointer; outline:none; }
+.group-sel:focus { border-color:var(--g); }
 
-/* Empty */
-.empty-state {
-  text-align:center; padding:60px 20px; color:var(--gm);
-}
+/* ── MODAL DETTAGLIO ──────────────────────────────────── */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:200; align-items:center; justify-content:center; padding:16px; }
+.modal-overlay.open { display:flex; }
+.modal-panel { background:var(--wh); border-radius:16px; width:100%; max-width:560px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); animation:modal-in .2s ease; }
+@keyframes modal-in { from{transform:scale(.95);opacity:0} to{transform:scale(1);opacity:1} }
+.modal-top { display:flex; align-items:center; gap:12px; padding:20px 20px 14px; border-bottom:1px solid var(--card-border); }
+.modal-avatar { width:52px; height:52px; border-radius:50%; color:white; font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.modal-info { flex:1; }
+.modal-name { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:700; color:var(--dk); }
+.modal-group { font-size:12px; color:var(--gm); margin-top:2px; }
+.modal-perc { font-family:'Barlow Condensed',sans-serif; font-size:32px; font-weight:700; }
+.modal-close { background:var(--gr); border:none; border-radius:50%; width:32px; height:32px; font-size:18px; cursor:pointer; color:var(--gm); display:flex; align-items:center; justify-content:center; flex-shrink:0; align-self:flex-start; }
+.modal-close:hover { background:var(--card-border); }
+.modal-body { padding:16px 20px 8px; }
+.modal-bottom { padding:12px 20px 16px; border-top:1px solid var(--card-border); display:flex; justify-content:flex-end; }
+.player-export-btn { background:var(--g); color:white; border:none; border-radius:8px; padding:9px 18px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; transition:background .15s; }
+.player-export-btn:hover { background:var(--gl); }
+.player-export-btn.copied { background:#888; }
+.modal-section { margin-bottom:18px; }
+.modal-section-title { font-size:10px; font-weight:700; color:var(--gm); text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px; }
+.modal-prog-wrap { height:8px; background:var(--gr); border-radius:4px; overflow:hidden; margin-bottom:12px; }
+.modal-prog-bar { height:100%; border-radius:4px; }
+.modal-sessions { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.modal-sess-pill { border-radius:8px; padding:8px 6px; text-align:center; }
+.modal-sess-pill.done { background:var(--gp); color:var(--gd); }
+.modal-sess-pill.todo { background:var(--gr); color:#bbb; }
+.modal-sess-pill.next { background:#fff8e1; color:#b35900; border:2px dashed #f0a500; }
+[data-dark] .modal-sess-pill.next { background:#2a1f00; color:#f0a500; }
+.modal-sess-label { display:block; font-size:10px; font-weight:700; opacity:.7; }
+.modal-sess-date  { display:block; font-size:11px; font-weight:600; margin-top:2px; }
+.mister-note-area { width:100%; min-height:80px; padding:10px 12px; border:1.5px solid var(--card-border); border-radius:10px; font-family:'Barlow',sans-serif; font-size:13px; color:var(--dk); background:var(--wh); resize:vertical; outline:none; transition:border-color .2s; }
+.mister-note-area:focus { border-color:var(--g); }
+.mister-note-area::placeholder { color:var(--gm); }
+.note-save-hint { font-size:11px; color:var(--gm); margin-top:4px; }
+
+/* ── MODAL EXPORT ─────────────────────────────────────── */
+.export-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:200; align-items:center; justify-content:center; padding:16px; }
+.export-overlay.open { display:flex; }
+.export-panel { background:var(--wh); border-radius:16px; width:100%; max-width:500px; max-height:85vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,.3); animation:modal-in .2s ease; }
+.export-top { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--card-border); }
+.export-top h2 { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:700; color:var(--dk); }
+.export-text { flex:1; margin:0; padding:16px 20px; font-family:'Barlow',monospace; font-size:12px; line-height:1.6; color:var(--dk); background:var(--gr); border:none; outline:none; resize:none; overflow-y:auto; white-space:pre; }
+.export-bottom { padding:12px 20px; border-top:1px solid var(--card-border); display:flex; gap:8px; justify-content:flex-end; }
+.copy-btn { background:var(--g); color:white; border:none; border-radius:8px; padding:9px 18px; font-size:13px; font-weight:600; cursor:pointer; transition:background .15s; }
+.copy-btn:hover { background:var(--gl); }
+.copy-btn.copied { background:#888; }
+
+/* ── EMPTY / LOADING ──────────────────────────────────── */
+.empty-state { text-align:center; padding:60px 20px; color:var(--gm); }
 .empty-state .big { font-size:48px; margin-bottom:12px; }
 .empty-state p { font-size:14px; }
-
-/* Loading */
-.loading {
-  text-align:center; padding:60px 20px;
-}
-.spinner {
-  width:40px; height:40px; border:3px solid var(--gp);
-  border-top-color:var(--g); border-radius:50%;
-  animation:spin .8s linear infinite; margin:0 auto 16px;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
+.loading { text-align:center; padding:60px 20px; }
+.spinner { width:40px; height:40px; border:3px solid var(--gp); border-top-color:var(--g); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 16px; }
+@keyframes spin { to{transform:rotate(360deg)} }
 
 @media(max-width:500px) {
-  .stats-bar { grid-template-columns:repeat(3,1fr); gap:8px; }
   .stat-num { font-size:24px; }
   .stat-lbl { font-size:10px; }
+  .auto-badge { display:none; }
+  .podium-cards { gap:6px; }
+  .podium-name { font-size:11px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ── LOGIN ─────────────────────────────────────────────── -->
+<!-- ── LOGIN ─────────────────────────────────────────── -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">GK</div>
@@ -256,25 +298,69 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:#f0f4f1; co
   </div>
 </div>
 
-<!-- ── DASHBOARD ─────────────────────────────────────────── -->
+<!-- ── DASHBOARD ─────────────────────────────────────── -->
 <div id="dashboard">
   <nav class="dash-nav">
     <div class="dash-nav-inner">
-      <h1>⚽ Dashboard Mister</h1>
+      <h1 id="dash-title">⚽ Dashboard Mister</h1>
       <div class="dash-nav-actions">
+        <span class="auto-badge" id="auto-badge"></span>
+        <button class="dash-btn icon" onclick="toggleDark()" id="dark-btn" title="Dark mode">🌙</button>
         <button class="dash-btn" onclick="loadData()">↻ Aggiorna</button>
-        <button class="dash-btn" onclick="testConn()" style="background:#7c5cbf">🔍 Test</button>
         <button class="dash-btn danger" onclick="logout()">Esci</button>
       </div>
     </div>
   </nav>
 
   <div class="dash-body">
-    <div class="stats-bar" id="stats-bar">
+    <!-- Stats -->
+    <div class="stats-bar">
       <div class="stat-card"><div class="stat-num" id="stat-tot">—</div><div class="stat-lbl">Portieri</div></div>
-      <div class="stat-card"><div class="stat-num" id="stat-done">—</div><div class="stat-lbl">Completato</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-done">—</div><div class="stat-lbl">Completati</div></div>
       <div class="stat-card"><div class="stat-num" id="stat-avg">—</div><div class="stat-lbl">Media %</div></div>
     </div>
+
+    <!-- Distribuzione -->
+    <div class="distrib-wrap" id="distrib-wrap" style="display:none">
+      <div class="distrib-title">Distribuzione progressi</div>
+      <div class="distrib-bar" id="distrib-bar"></div>
+      <div class="distrib-legend" id="distrib-legend"></div>
+    </div>
+
+    <!-- Podio -->
+    <div class="podium-section" id="podium-section" style="display:none">
+      <div class="podium-hdr" onclick="togglePodium()">
+        <span>🏆</span>
+        <span class="podium-hdr-title">Classifica</span>
+        <span class="sec-arrow" id="podium-arrow">▴</span>
+      </div>
+      <div id="podium-body">
+        <div class="podium-stage" id="podium-cards"></div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-row">
+      <input class="search-input" id="search-input" type="search" placeholder="Cerca portiere..." oninput="onSearch(this.value)">
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="filter-bar">
+        <button class="flt-btn active" data-filter="all"      onclick="setFilter('all')">Tutti</button>
+        <button class="flt-btn"        data-filter="progress" onclick="setFilter('progress')">In corso</button>
+        <button class="flt-btn"        data-filter="done"     onclick="setFilter('done')">Completati</button>
+      </div>
+      <div class="toolbar-right">
+        <div class="sort-bar">
+          <span>Ordina:</span>
+          <button class="srt-btn active" id="srt-perc" onclick="setSort('perc')">% ↓</button>
+          <button class="srt-btn"        id="srt-nome" onclick="setSort('nome')">A–Z</button>
+        </div>
+        <button class="export-btn" onclick="openExport()">📤 Esporta</button>
+      </div>
+    </div>
+
     <div class="refresh-info" id="refresh-info"></div>
     <div id="players-container">
       <div class="loading"><div class="spinner"></div><p>Caricamento dati...</p></div>
@@ -282,245 +368,656 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:#f0f4f1; co
   </div>
 </div>
 
+<!-- ── MODAL DETTAGLIO ────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
+  <div class="modal-panel" id="modal-panel">
+    <div class="modal-top">
+      <div class="modal-avatar" id="m-avatar"></div>
+      <div class="modal-info">
+        <div class="modal-name" id="m-name"></div>
+        <div class="modal-group" id="m-group"></div>
+      </div>
+      <div class="modal-perc" id="m-perc"></div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-bottom">
+      <button class="player-export-btn" id="player-export-btn" onclick="exportPlayer()">📤 Esporta scheda</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL EXPORT ───────────────────────────────────── -->
+<div class="export-overlay" id="export-overlay" onclick="closeExportOnBg(event)">
+  <div class="export-panel">
+    <div class="export-top">
+      <h2>📤 Riepilogo portieri</h2>
+      <button class="modal-close" onclick="closeExport()">×</button>
+    </div>
+    <textarea class="export-text" id="export-text" readonly></textarea>
+    <div class="export-bottom">
+      <button class="copy-btn" id="copy-btn" onclick="copyExport()">Copia testo</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8hdQW2oQ6r_UjDzTgGwT6MIzHl1AZv-z17-hpyBI-CKcDiwOK-RO0GDX73Cx3S8GQ/exec';
-const PINS = {
-  '2003': 'Andrea',
-  '1990': 'Alessio'
-};
+const PINS   = { '2003':'Andrea', '1990':'Alessio' };
+const GROUPS = ['Prove','2012','2011','2010','Altri'];
+const AVATAR_COLORS = ['#1a7a3c','#2980b9','#8e44ad','#e67e22','#c0392b','#16a085','#d35400','#34495e'];
+const AUTO_MIN = 5;
 
-// ── PIN ──────────────────────────────────────────────────
-let pinEntry = '';
+let pinEntry      = '';
+let allPlayers    = [];
+let currentFilter = 'all';
+let currentSort   = 'perc';
+let searchQuery   = '';
+let autoTimer     = null;
+let countdownTimer= null;
+let nextRefreshAt = null;
+let notesOpenState= {};
+let sectionClosed = {};
+let groupMap      = {};   // { playerName: groupName }
+let misterNotes   = {};   // { playerName: noteText }
+let modalPlayer   = null;
 
+/* ── STORAGE ─────────────────────────────────────────── */
+function lsGet(k, def={}) { try{return JSON.parse(localStorage.getItem(k)||'null')||def;}catch{return def;} }
+function lsSet(k,v)       { try{localStorage.setItem(k,JSON.stringify(v));}catch{} }
+
+/* ── DARK MODE ───────────────────────────────────────── */
+function toggleDark() {
+  const on = document.documentElement.hasAttribute('data-dark');
+  if (on) { document.documentElement.removeAttribute('data-dark'); lsSet('gk_dark',false); document.getElementById('dark-btn').textContent='🌙'; }
+  else    { document.documentElement.setAttribute('data-dark',''); lsSet('gk_dark',true);  document.getElementById('dark-btn').textContent='☀️'; }
+}
+function initDark() {
+  if (lsGet('gk_dark',false)) { document.documentElement.setAttribute('data-dark',''); document.getElementById('dark-btn').textContent='☀️'; }
+}
+
+/* ── PIN ─────────────────────────────────────────────── */
 function buildPinPad() {
   const pad = document.getElementById('pin-pad');
-  const keys = ['1','2','3','4','5','6','7','8','9','','0','⌫'];
-  keys.forEach(k => {
-    const btn = document.createElement('button');
-    btn.className = 'pin-btn' + (k==='' ? ' empty' : '') + (k==='⌫' ? ' del' : '');
-    btn.textContent = k;
-    if (k !== '') btn.addEventListener('click', () => pinPress(k));
-    pad.appendChild(btn);
+  ['1','2','3','4','5','6','7','8','9','','0','⌫'].forEach(k => {
+    const b = document.createElement('button');
+    b.className = 'pin-btn'+(k===''?' empty':'')+(k==='⌫'?' del':'');
+    b.textContent = k;
+    if (k!=='') b.addEventListener('click',()=>pinPress(k));
+    pad.appendChild(b);
   });
 }
-
-function pinPress(key) {
-  const err = document.getElementById('pin-error');
-  err.textContent = '';
-  if (key === '⌫') {
-    pinEntry = pinEntry.slice(0,-1);
-  } else if (pinEntry.length < 4) {
-    pinEntry += key;
-  }
+function pinPress(k) {
+  document.getElementById('pin-error').textContent='';
+  if(k==='⌫') pinEntry=pinEntry.slice(0,-1);
+  else if(pinEntry.length<4) pinEntry+=k;
   updateDots();
-  if (pinEntry.length === 4) checkPin();
+  if(pinEntry.length===4) checkPin();
 }
-
 function updateDots() {
-  document.querySelectorAll('#pin-dots span').forEach((s,i) => {
-    s.classList.toggle('filled', i < pinEntry.length);
-  });
+  document.querySelectorAll('#pin-dots span').forEach((s,i)=>s.classList.toggle('filled',i<pinEntry.length));
 }
-
 function checkPin() {
-  const misterName = PINS[pinEntry];
-  if (misterName) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    // Aggiorna saluto nella nav
-    document.querySelector('.dash-nav h1').textContent = '👋 Ciao Mister ' + misterName + '!';
+  const name=PINS[pinEntry];
+  if(name){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    document.getElementById('dash-title').textContent='👋 Ciao Mister '+name+'!';
+    groupMap    = lsGet('gk_groups',{});
+    misterNotes = lsGet('gk_mnotes',{});
+    startAutoRefresh();
     loadData();
   } else {
-    document.getElementById('pin-error').textContent = '⚠️ PIN errato, riprova';
-    pinEntry = '';
-    updateDots();
-    setTimeout(() => document.getElementById('pin-error').textContent = '', 2000);
+    document.getElementById('pin-error').textContent='⚠️ PIN errato, riprova';
+    pinEntry=''; updateDots();
+    setTimeout(()=>document.getElementById('pin-error').textContent='',2000);
+  }
+}
+function logout() {
+  stopAutoRefresh();
+  pinEntry=''; updateDots();
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+}
+
+/* ── AUTO-REFRESH ────────────────────────────────────── */
+function startAutoRefresh() {
+  stopAutoRefresh();
+  nextRefreshAt = Date.now()+AUTO_MIN*60000;
+  autoTimer = setInterval(()=>{ nextRefreshAt=Date.now()+AUTO_MIN*60000; loadData(true); }, AUTO_MIN*60000);
+  countdownTimer = setInterval(updateCountdown, 10000);
+  updateCountdown();
+}
+function stopAutoRefresh() {
+  if(autoTimer)      { clearInterval(autoTimer);      autoTimer=null; }
+  if(countdownTimer) { clearInterval(countdownTimer); countdownTimer=null; }
+}
+function updateCountdown() {
+  const mins=Math.max(0,Math.round((nextRefreshAt-Date.now())/60000));
+  document.getElementById('auto-badge').textContent=nextRefreshAt?`↺ ${mins}m`:'';
+}
+
+/* ── FILTER / SORT / SEARCH ──────────────────────────── */
+function setFilter(f) {
+  currentFilter=f;
+  document.querySelectorAll('.flt-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));
+  renderFiltered();
+}
+function setSort(s) {
+  currentSort=s;
+  document.querySelectorAll('.srt-btn').forEach(b=>b.classList.toggle('active',b.id==='srt-'+s));
+  renderFiltered();
+}
+function onSearch(q) { searchQuery=q.toLowerCase().trim(); renderFiltered(); }
+
+function renderFiltered() {
+  let list=[...allPlayers];
+  if(currentFilter==='done')     list=list.filter(p=>percNum(p.perc)>=100);
+  if(currentFilter==='progress') list=list.filter(p=>percNum(p.perc)<100);
+  if(currentSort==='nome') list.sort((a,b)=>(a.nome||'').localeCompare(b.nome||'','it'));
+  else                     list.sort((a,b)=>percNum(b.perc)-percNum(a.perc));
+  if(searchQuery) {
+    // Ricerca: lista piatta, ignora divisioni, match fuzzy su nome
+    const q=searchQuery;
+    list=list.filter(p=>{
+      const n=(p.nome||'').toLowerCase();
+      // match esatto sottostringa o ogni parola della query
+      if(n.includes(q)) return true;
+      return q.split(/\s+/).every(w=>n.includes(w));
+    });
+    renderFlat(list, q);
+  } else {
+    renderByGroups(list);
   }
 }
 
-function testConn() {
-  // Apre la URL diretta in un tab per vedere cosa risponde Apps Script
-  window.open(SCRIPT_URL + '?callback=_misterCb', '_blank');
+function renderFlat(players, q) {
+  const container=document.getElementById('players-container');
+  if(!players.length){
+    container.innerHTML='<div class="empty-state"><div class="big">🔍</div><p>Nessun portiere trovato per "<b>'+q+'</b>"</p></div>';
+    return;
+  }
+  const header=document.createElement('div');
+  header.style.cssText='font-size:12px;color:var(--gm);margin-bottom:12px;font-weight:600';
+  header.textContent=`${players.length} risultat${players.length===1?'o':'i'} per "${q}"`;
+  const grid=document.createElement('div');
+  grid.className='players-grid';
+  players.forEach((p,i)=>grid.appendChild(makeCard(p,9000+i)));
+  container.innerHTML='';
+  container.appendChild(header);
+  container.appendChild(grid);
 }
 
-function logout() {
-  pinEntry = '';
-  updateDots();
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-}
-
-// ── DATA ─────────────────────────────────────────────────
-function loadData() {
-  document.getElementById('players-container').innerHTML =
+/* ── DATA ────────────────────────────────────────────── */
+function loadData(silent=false) {
+  if(!silent) document.getElementById('players-container').innerHTML=
     '<div class="loading"><div class="spinner"></div><p>Caricamento dati...</p></div>';
-
-  // Rimuovi script JSONP precedente se esiste
-  const old = document.getElementById('jsonp-script');
-  if (old) old.remove();
-
-  // Timeout di sicurezza
-  const timer = setTimeout(() => {
-    document.getElementById('players-container').innerHTML =
-      `<div class="empty-state">
-        <div class="big">⚠️</div>
-        <p><b>Timeout</b> — Apps Script non ha risposto.<br>Premi <b>🔍 Test</b> per vedere la risposta grezza.<br>Verifica che il doGet restituisca JSONP e sia distribuito come <b>Chiunque</b>.</p>
-       </div>`;
-  }, 10000);
-
-  // Callback globale che verrà chiamata dallo script JSONP
-  window._misterCb = function(json) {
+  const old=document.getElementById('jsonp-script');
+  if(old) old.remove();
+  const timer=setTimeout(()=>{
+    if(!silent) document.getElementById('players-container').innerHTML=
+      `<div class="empty-state"><div class="big">⚠️</div><p><b>Timeout</b><br>Verifica la distribuzione Apps Script (<b>Chiunque</b>).</p></div>`;
+  },10000);
+  window._misterCb=function(json){
     clearTimeout(timer);
-    if (json && json.ok) {
-      try {
-        renderDashboard(json.players, json.ts);
-      } catch(err) {
-        document.getElementById('players-container').innerHTML =
-          `<div class="empty-state"><div class="big">❌</div>
-           <p><b>Errore rendering:</b><br><code>${err.message}</code></p></div>`;
+    if(json&&json.ok){
+      try{
+        allPlayers=json.players||[];
+        updateStats(allPlayers);
+        updateDistrib(allPlayers);
+        updatePodium(allPlayers);
+        document.getElementById('refresh-info').textContent=json.ts?'Aggiornato: '+json.ts:'';
+        renderFiltered();
+      }catch(err){
+        document.getElementById('players-container').innerHTML=
+          `<div class="empty-state"><div class="big">❌</div><p><b>Errore:</b><br><code>${err.message}</code></p></div>`;
       }
     } else {
-      document.getElementById('players-container').innerHTML =
-        '<div class="empty-state"><div class="big">⚠️</div><p>Dati non validi ricevuti.</p></div>';
+      document.getElementById('players-container').innerHTML=
+        '<div class="empty-state"><div class="big">⚠️</div><p>Dati non validi.</p></div>';
     }
   };
-
-  // Carica via tag <script> — aggira CORS (cache-buster per evitare risposte vecchie)
-  const script = document.createElement('script');
-  script.id = 'jsonp-script';
-  script.src = SCRIPT_URL + '?callback=_misterCb&t=' + Date.now();
-  script.onerror = () => {
-    clearTimeout(timer);
-    document.getElementById('players-container').innerHTML =
-      `<div class="empty-state">
-        <div class="big">⚠️</div>
-        <p>Impossibile raggiungere il server.<br>Controlla che la distribuzione sia impostata su "Chiunque".</p>
-       </div>`;
+  const script=document.createElement('script');
+  script.id='jsonp-script';
+  script.src=SCRIPT_URL+'?callback=_misterCb&t='+Date.now();
+  script.onerror=()=>{ clearTimeout(timer);
+    document.getElementById('players-container').innerHTML=
+      `<div class="empty-state"><div class="big">⚠️</div><p>Impossibile raggiungere il server.</p></div>`;
   };
   document.body.appendChild(script);
 }
 
-function percNum(p) {
-  if (p === null || p === undefined || p === '') return 0;
-  // Numero decimale tipo 0.17 → moltiplica per 100
-  if (typeof p === 'number') return Math.round(p * 100);
-  // Stringa tipo "17%" → rimuovi % e converti
-  return parseInt(String(p).replace('%','')) || 0;
+/* ── STATS ───────────────────────────────────────────── */
+function updateStats(players) {
+  const tot=players.length;
+  const done=players.filter(p=>percNum(p.perc)>=100).length;
+  const avg=tot?Math.round(players.reduce((s,p)=>s+percNum(p.perc),0)/tot):0;
+  document.getElementById('stat-tot').textContent=tot;
+  document.getElementById('stat-done').textContent=done+'/'+tot;
+  document.getElementById('stat-avg').textContent=avg+'%';
 }
 
-function percClass(n) {
-  if (n >= 100) return '100';
-  if (n >= 50)  return 'mid';
-  return 'low';
+/* ── DISTRIBUZIONE ───────────────────────────────────── */
+function updateDistrib(players) {
+  if(!players.length){ document.getElementById('distrib-wrap').style.display='none'; return; }
+  const buckets=[0,0,0,0]; // 0-25, 25-50, 50-99, 100
+  players.forEach(p=>{
+    const n=percNum(p.perc);
+    if(n>=100) buckets[3]++;
+    else if(n>=50) buckets[2]++;
+    else if(n>=25) buckets[1]++;
+    else buckets[0]++;
+  });
+  const total=players.length;
+  const colors=['d0','d25','d50','d100'];
+  const labels=['0–24%','25–49%','50–99%','100%'];
+  const barColors=['#e74c3c','#f0a500','#3498db','#26a653'];
+  const bar=document.getElementById('distrib-bar');
+  const leg=document.getElementById('distrib-legend');
+  bar.innerHTML='';
+  leg.innerHTML='';
+  let hasAny=false;
+  buckets.forEach((n,i)=>{
+    if(!n) return;
+    hasAny=true;
+    const seg=document.createElement('div');
+    seg.className='distrib-seg '+colors[i];
+    seg.style.flex=n;
+    seg.title=`${labels[i]}: ${n} portieri`;
+    bar.appendChild(seg);
+    const item=document.createElement('div');
+    item.className='dl-item';
+    item.innerHTML=`<span class="dl-dot" style="background:${barColors[i]}"></span>${labels[i]}: <b>${n}</b>`;
+    leg.appendChild(item);
+  });
+  if(!hasAny){ const e=document.createElement('div'); e.className='distrib-seg empty-bar'; bar.appendChild(e); }
+  document.getElementById('distrib-wrap').style.display='block';
 }
 
-function sessBlock(label, date) {
-  if (date) {
-    return `<div class="sess-pill done">
-      <span class="sess-label">${label}</span>
-      <span class="sess-date">✓ ${date.split(' ')[0]}</span>
-    </div>`;
-  }
-  return `<div class="sess-pill todo">
-    <span class="sess-label">${label}</span>
-    <span class="sess-date">—</span>
-  </div>`;
+/* ── PODIO ───────────────────────────────────────────── */
+let podiumClosed=false;
+function updatePodium(players) {
+  // Escludi portieri nel gruppo "Prove"
+  const eligible=[...players].filter(p=>groupMap[p.nome]!=='Prove');
+  if(!eligible.length){ document.getElementById('podium-section').style.display='none'; return; }
+  const sorted=eligible.sort((a,b)=>percNum(b.perc)-percNum(a.perc));
+  const top=sorted.slice(0,3);
+  // Ordine visivo: 2° sinistra, 1° centro, 3° destra
+  const visualOrder=top.length===1?[null,top[0],null]:top.length===2?[top[1],top[0],null]:[top[1],top[0],top[2]];
+  const medals=['🥇','🥈','🥉'];
+  const cls=['p1','p2','p3'];
+  const rankCls=['rank2','rank1','rank3'];
+  const realRank=[1,0,2]; // indice in top[] per ogni posizione visiva
+  const stage=document.getElementById('podium-cards');
+  stage.innerHTML='';
+  visualOrder.forEach((p,vi)=>{
+    if(!p){ const ph=document.createElement('div'); ph.style.flex='1'; stage.appendChild(ph); return; }
+    const ri=top.indexOf(p);
+    const pn=percNum(p.perc);
+    const col=document.createElement('div');
+    col.className='podium-col '+rankCls[vi];
+    col.title='Apri dettaglio';
+    col.onclick=()=>openModal(p.nome);
+    col.innerHTML=`
+      <div class="podium-card ${cls[ri]}">
+        <div class="podium-medal">${medals[ri]}</div>
+        <div class="podium-avatar" style="background:${avatarColor(p.nome)}">${initials(p.nome)}</div>
+        <div class="podium-name" title="${p.nome}">${p.nome}</div>
+        <div class="podium-perc perc-${percClass(pn)}">${pn}%</div>
+      </div>
+      <div class="podium-step"><span class="podium-rank-num">${ri+1}</span></div>`;
+    stage.appendChild(col);
+  });
+  document.getElementById('podium-section').style.display='block';
+}
+function togglePodium() {
+  podiumClosed=!podiumClosed;
+  document.getElementById('podium-body').style.display=podiumClosed?'none':'';
+  document.getElementById('podium-arrow').classList.toggle('closed',podiumClosed);
 }
 
-function hasNotes(p) {
-  return [p.nS1a1,p.nS1a2,p.nS1a3,p.nS2a1,p.nS2a2,p.nS2a3].some(n => n && String(n).trim());
+/* ── GROUP RENDER ────────────────────────────────────── */
+function setPlayerGroup(sel) {
+  const nome=sel.dataset.nome;
+  if(sel.value) groupMap[nome]=sel.value; else delete groupMap[nome];
+  lsSet('gk_groups',groupMap);
+  renderFiltered();
 }
-
-function noteRow(label, text) {
-  if (!text || !String(text).trim()) return '';
-  return `<div class="note-row">
-    <div class="note-row-lbl">${label}</div>
-    <div class="note-row-text">${text}</div>
-  </div>`;
-}
-
-let notesOpenState = {};
-
-function toggleNotes(id) {
-  notesOpenState[id] = !notesOpenState[id];
-  const body = document.getElementById('nb-' + id);
-  const arrow = document.getElementById('na-' + id);
-  if (body) body.classList.toggle('open', !!notesOpenState[id]);
-  if (arrow) arrow.textContent = notesOpenState[id] ? '▲' : '▾';
-}
-
-function renderDashboard(players, ts) {
-  // Sort by %
-  players.sort((a,b) => percNum(b.perc) - percNum(a.perc));
-
-  // Stats
-  const tot  = players.length;
-  const done = players.filter(p => percNum(p.perc) >= 100).length;
-  const avg  = tot ? Math.round(players.reduce((s,p) => s + percNum(p.perc), 0) / tot) : 0;
-  document.getElementById('stat-tot').textContent  = tot;
-  document.getElementById('stat-done').textContent = done;
-  document.getElementById('stat-avg').textContent  = avg + '%';
-  document.getElementById('refresh-info').textContent = ts ? 'Aggiornato: ' + ts : '';
-
-  if (!players.length) {
-    document.getElementById('players-container').innerHTML =
-      '<div class="empty-state"><div class="big">📋</div><p>Nessun portiere ha ancora inviato dati.</p></div>';
+function renderByGroups(players) {
+  const container=document.getElementById('players-container');
+  if(!players.length){
+    container.innerHTML='<div class="empty-state"><div class="big">📋</div><p>Nessun portiere corrisponde al filtro.</p></div>';
     return;
   }
-
-  const grid = document.createElement('div');
-  grid.className = 'players-grid';
-
-  players.forEach((p, i) => {
-    const pn = percNum(p.perc);
-    const pc = percClass(pn);
-    const showNotes = hasNotes(p);
-    const uid = 'p' + i;
-
-    const card = document.createElement('div');
-    card.className = 'player-card';
-    card.innerHTML = `
-      <div class="player-hdr">
-        <div class="player-name">${p.nome}</div>
-        <div class="player-perc perc-${pc}">${pn}%</div>
-      </div>
-      <div class="prog-bar-wrap">
-        <div class="prog-bar c${pc}" style="width:${Math.min(pn,100)}%"></div>
-      </div>
-      <div class="sessions-grid">
-        ${sessBlock('S1·A1', p.s1a1)}
-        ${sessBlock('S1·A2', p.s1a2)}
-        ${sessBlock('S1·A3', p.s1a3)}
-        ${sessBlock('S2·A1', p.s2a1)}
-        ${sessBlock('S2·A2', p.s2a2)}
-        ${sessBlock('S2·A3', p.s2a3)}
-      </div>
-      ${p.test ? `<div class="test-row"><b>Test:</b> ${p.test}${p.testAgg ? ' · <i>'+p.testAgg+'</i>' : ''}</div>` : ''}
-      ${showNotes ? `
-      <div class="notes-section">
-        <button class="notes-toggle" onclick="toggleNotes('${uid}')">
-          📝 Note portiere
-          <span id="na-${uid}">▾</span>
-        </button>
-        <div class="notes-body" id="nb-${uid}">
-          ${noteRow('S1·A1', p.nS1a1)}
-          ${noteRow('S1·A2', p.nS1a2)}
-          ${noteRow('S1·A3', p.nS1a3)}
-          ${noteRow('S2·A1', p.nS2a1)}
-          ${noteRow('S2·A2', p.nS2a2)}
-          ${noteRow('S2·A3', p.nS2a3)}
-        </div>
-      </div>` : ''}
-      ${p.agg ? `<div class="player-footer">Ultimo aggiornamento: ${p.agg}</div>` : ''}
-    `;
-    grid.appendChild(card);
-  });
-
-  document.getElementById('players-container').innerHTML = '';
-  document.getElementById('players-container').appendChild(grid);
+  const buckets={};
+  GROUPS.forEach(g=>buckets[g]=[]);
+  buckets['__none__']=[];
+  players.forEach(p=>{ const g=groupMap[p.nome]; if(g&&buckets[g]) buckets[g].push(p); else buckets['__none__'].push(p); });
+  container.innerHTML='';
+  GROUPS.forEach((g,i)=>container.appendChild(makeSection(g,buckets[g],i,false)));
+  container.appendChild(makeSection('Non assegnati',buckets['__none__'],GROUPS.length,true));
+}
+function makeSection(name,members,idx,isUnassigned) {
+  const secId='sec-'+idx, bodyId='sec-body-'+idx, arrowId='sec-arrow-'+idx;
+  const isClosed=!!sectionClosed[secId];
+  const icon=isUnassigned?'❓':sectionIcon(name);
+  const sec=document.createElement('div');
+  sec.className='group-section';
+  sec.innerHTML=`
+    <div class="group-hdr ${isUnassigned?'unassigned':''}" onclick="toggleSection('${secId}','${bodyId}','${arrowId}')">
+      <span class="group-hdr-icon">${icon}</span>
+      <span class="group-hdr-name">${name}</span>
+      <span class="group-hdr-count ${members.length===0?'zero':''}">${members.length}</span>
+      <span class="sec-arrow ${isClosed?'closed':''}" id="${arrowId}">▴</span>
+    </div>
+    <div class="group-body ${isClosed?'hidden':''}" id="${bodyId}">
+      ${members.length===0?`<div style="color:var(--gm);font-size:13px;padding:6px 4px 16px;text-align:center">Nessun portiere in questa categoria</div>`:''}
+    </div>`;
+  if(members.length>0){
+    const grid=document.createElement('div');
+    grid.className='players-grid';
+    members.forEach((p,i)=>grid.appendChild(makeCard(p,idx*100+i)));
+    sec.querySelector('.group-body').appendChild(grid);
+  }
+  return sec;
+}
+function toggleSection(secId,bodyId,arrowId) {
+  const body=document.getElementById(bodyId), arrow=document.getElementById(arrowId);
+  if(!body) return;
+  const closing=!body.classList.contains('hidden');
+  body.classList.toggle('hidden',closing);
+  sectionClosed[secId]=closing;
+  if(arrow) arrow.classList.toggle('closed',closing);
+}
+function sectionIcon(n) {
+  const m={'Prove':'🧪','2012':'🟢','2011':'🔵','2010':'🟠','Altri':'⭐'};
+  return m[n]||'📁';
 }
 
-// ── INIT ─────────────────────────────────────────────────
+/* ── CARD ────────────────────────────────────────────── */
+function makeCard(p,uid) {
+  const pn=percNum(p.perc), pc=percClass(pn);
+  const done=sessDone(p), bCls=done===6?'full':done>=3?'half':'';
+  const fresh=freshnessInfo(p.agg);
+  const showN=hasNotes(p);
+  const hasMN=!!(misterNotes[p.nome]&&misterNotes[p.nome].trim());
+  const safeN=(p.nome||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+  const curGrp=groupMap[p.nome]||'';
+  const nextIdx=getNextSessIdx(p);
+
+  const card=document.createElement('div');
+  card.className='player-card';
+  card.innerHTML=`
+    <div class="player-hdr" onclick="openModal('${safeN}')">
+      <div class="avatar" style="background:${avatarColor(p.nome)}">${initials(p.nome)}</div>
+      <div class="player-info">
+        <div class="player-name">${p.nome}${hasMN?'<span class="note-mister-dot" title="Hai una nota su questo portiere">📋</span>':''}</div>
+        <div class="player-meta"><span class="sess-badge ${bCls}">${done}/6 sessioni</span></div>
+      </div>
+      <div class="player-perc perc-${pc}">${pn}%</div>
+    </div>
+    <div class="prog-bar-wrap"><div class="prog-bar c${pc}" style="width:${Math.min(pn,100)}%"></div></div>
+    <div class="sessions-grid">
+      ${[['S1·A1',p.s1a1,0],['S1·A2',p.s1a2,1],['S1·A3',p.s1a3,2],['S2·A1',p.s2a1,3],['S2·A2',p.s2a2,4],['S2·A3',p.s2a3,5]]
+        .map(([lbl,dt,i])=>sessBlock(lbl,dt,i===nextIdx)).join('')}
+    </div>
+    ${renderTest(p.test,p.testAgg)}
+    ${showN?`
+    <div class="notes-section">
+      <button class="notes-toggle" onclick="toggleNotes('n${uid}')">📝 Note portiere <span id="na-n${uid}">▾</span></button>
+      <div class="notes-body" id="nb-n${uid}">
+        ${noteRow('S1·A1',p.nS1a1)}${noteRow('S1·A2',p.nS1a2)}${noteRow('S1·A3',p.nS1a3)}
+        ${noteRow('S2·A1',p.nS2a1)}${noteRow('S2·A2',p.nS2a2)}${noteRow('S2·A3',p.nS2a3)}
+      </div>
+    </div>`:''}
+    ${p.agg?`
+    <div class="player-footer">
+      <span class="fresh-dot dot-${fresh.cls}"></span>
+      <span class="fresh-label">${fresh.label}</span>
+      <button class="detail-btn" onclick="openModal('${safeN}')">Dettaglio →</button>
+    </div>`:''}
+    <div class="group-select-row">
+      <label>📁</label>
+      <select class="group-sel" data-nome="${safeN}" onchange="setPlayerGroup(this)">
+        <option value="" ${curGrp===''?'selected':''}>— non assegnato —</option>
+        ${GROUPS.map(g=>`<option value="${g}" ${curGrp===g?'selected':''}>${g}</option>`).join('')}
+      </select>
+    </div>`;
+  return card;
+}
+
+/* ── MODAL DETTAGLIO ─────────────────────────────────── */
+function openModal(nome) {
+  const p=allPlayers.find(x=>x.nome===nome);
+  if(!p) return;
+  modalPlayer=p;
+  const pn=percNum(p.perc), pc=percClass(pn);
+  const nextIdx=getNextSessIdx(p);
+  document.getElementById('m-avatar').style.background=avatarColor(p.nome);
+  document.getElementById('m-avatar').textContent=initials(p.nome);
+  document.getElementById('m-name').textContent=p.nome;
+  document.getElementById('m-group').textContent=groupMap[p.nome]?'📁 '+groupMap[p.nome]:'Non assegnato';
+  const percEl=document.getElementById('m-perc');
+  percEl.textContent=pn+'%'; percEl.className='modal-perc perc-'+pc;
+  const body=document.getElementById('modal-body');
+  const sessions=[['S1·A1',p.s1a1,0],['S1·A2',p.s1a2,1],['S1·A3',p.s1a3,2],['S2·A1',p.s2a1,3],['S2·A2',p.s2a2,4],['S2·A3',p.s2a3,5]];
+  const testHtml=p.test?`
+    <div class="modal-section">
+      <div class="modal-section-title">🏁 Test fisico${p.testAgg?' — '+p.testAgg:''}</div>
+      <div class="test-pills">${renderTestPills(p.test)}</div>
+    </div>`:'';
+  const notesHtml=hasNotes(p)?`
+    <div class="modal-section">
+      <div class="modal-section-title">📝 Note portiere</div>
+      ${noteRow('S1·A1',p.nS1a1)}${noteRow('S1·A2',p.nS1a2)}${noteRow('S1·A3',p.nS1a3)}
+      ${noteRow('S2·A1',p.nS2a1)}${noteRow('S2·A2',p.nS2a2)}${noteRow('S2·A3',p.nS2a3)}
+    </div>`:'';
+  const curNote=(misterNotes[p.nome]||'');
+  body.innerHTML=`
+    <div class="modal-section">
+      <div class="modal-section-title">Progresso — ${pn}%</div>
+      <div class="modal-prog-wrap"><div class="modal-prog-bar c${pc}" style="width:${Math.min(pn,100)}%;background:${pc==='100'?'var(--gl)':pc==='mid'?'#f0a500':'#e74c3c'}"></div></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Sessioni</div>
+      <div class="modal-sessions">
+        ${sessions.map(([lbl,dt,i])=>`
+          <div class="modal-sess-pill ${dt&&String(dt).trim()?'done':i===nextIdx?'next':'todo'}">
+            <span class="modal-sess-label">${lbl}</span>
+            <span class="modal-sess-date">${dt&&String(dt).trim()?'✓ '+String(dt).split(' ')[0]:i===nextIdx?'→ prossima':'—'}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+    ${testHtml}
+    ${notesHtml}
+    <div class="modal-section">
+      <div class="modal-section-title">📋 Note Mister (private)</div>
+      <textarea class="mister-note-area" id="mister-note-ta" placeholder="Scrivi qui le tue note su questo portiere..." onblur="saveMisterNote()">${curNote}</textarea>
+      <div class="note-save-hint">Salvato automaticamente alla chiusura</div>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function exportPlayer() {
+  const p=modalPlayer;
+  if(!p) return;
+  const pn=percNum(p.perc);
+  const sessions=[['S1·A1',p.s1a1],['S1·A2',p.s1a2],['S1·A3',p.s1a3],['S2·A1',p.s2a1],['S2·A2',p.s2a2],['S2·A3',p.s2a3]];
+  const done=sessions.filter(([,d])=>d&&String(d).trim()).length;
+  const lines=[];
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push(`👤 ${p.nome}`);
+  if(groupMap[p.nome]) lines.push(`📁 Gruppo: ${groupMap[p.nome]}`);
+  lines.push(`📊 Progresso: ${pn}%`);
+  lines.push(`✅ Sessioni completate: ${done}/6`);
+  lines.push('');
+  lines.push('📅 Sessioni:');
+  sessions.forEach(([lbl,dt])=>{
+    lines.push(`  ${dt&&String(dt).trim()?'✓':'○'} ${lbl}: ${dt&&String(dt).trim()?String(dt):'—'}`);
+  });
+  if(p.test){
+    lines.push('');
+    lines.push('🏁 Test fisico'+(p.testAgg?' ('+p.testAgg+')':'')+':
+  '+p.test.split('|').map(s=>s.trim()).join('
+  '));
+  }
+  const playerNotes=[[' S1·A1',p.nS1a1],['S1·A2',p.nS1a2],['S1·A3',p.nS1a3],['S2·A1',p.nS2a1],['S2·A2',p.nS2a2],['S2·A3',p.nS2a3]].filter(([,n])=>n&&String(n).trim());
+  if(playerNotes.length){
+    lines.push('');
+    lines.push('📝 Note portiere:');
+    playerNotes.forEach(([lbl,n])=>lines.push(`  ${lbl}: ${n}`));
+  }
+  const mn=misterNotes[p.nome];
+  if(mn&&mn.trim()){
+    lines.push('');
+    lines.push('📋 Note Mister:');
+    lines.push('  '+mn.trim().replace(/
+/g,'
+  '));
+  }
+  if(p.agg) lines.push('');
+  if(p.agg) lines.push(`🕐 Ultimo aggiornamento: ${p.agg}`);
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━');
+  const text=lines.join('
+');
+  const btn=document.getElementById('player-export-btn');
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✓ Copiato!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.innerHTML='📤 Esporta scheda'; btn.classList.remove('copied'); },2000);
+  }).catch(()=>{
+    // fallback
+    const ta=document.createElement('textarea');
+    ta.value=text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent='✓ Copiato!';
+    setTimeout(()=>{ btn.innerHTML='📤 Esporta scheda'; },2000);
+  });
+}
+
+function saveMisterNote() {
+  if(!modalPlayer) return;
+  const val=document.getElementById('mister-note-ta').value.trim();
+  if(val) misterNotes[modalPlayer.nome]=val; else delete misterNotes[modalPlayer.nome];
+  lsSet('gk_mnotes',misterNotes);
+}
+function closeModal() {
+  saveMisterNote();
+  document.getElementById('modal-overlay').classList.remove('open');
+  modalPlayer=null;
+  renderFiltered(); // aggiorna icona 📋
+}
+function closeModalOnBg(e) { if(e.target===document.getElementById('modal-overlay')) closeModal(); }
+
+/* ── EXPORT ──────────────────────────────────────────── */
+function openExport() {
+  const lines=[];
+  const now=new Date();
+  lines.push(`📊 Riepilogo Portieri — ${now.toLocaleDateString('it-IT')}`);
+  lines.push('');
+  GROUPS.forEach(g=>{
+    const members=allPlayers.filter(p=>groupMap[p.nome]===g);
+    if(!members.length) return;
+    lines.push(`${sectionIcon(g)} ${g}`);
+    members.sort((a,b)=>percNum(b.perc)-percNum(a.perc)).forEach(p=>{
+      const pn=percNum(p.perc), done=sessDone(p);
+      lines.push(`  • ${p.nome} — ${pn}% (${done}/6 sessioni)${p.test?' | Test: '+p.test:''}`);
+    });
+    lines.push('');
+  });
+  const unassigned=allPlayers.filter(p=>!groupMap[p.nome]);
+  if(unassigned.length){
+    lines.push('❓ Non assegnati');
+    unassigned.forEach(p=>{ const pn=percNum(p.perc),done=sessDone(p); lines.push(`  • ${p.nome} — ${pn}% (${done}/6)`); });
+    lines.push('');
+  }
+  const tot=allPlayers.length;
+  const avg=tot?Math.round(allPlayers.reduce((s,p)=>s+percNum(p.perc),0)/tot):0;
+  lines.push(`Totale: ${tot} portieri | Media: ${avg}%`);
+  document.getElementById('export-text').value=lines.join('\n');
+  document.getElementById('copy-btn').textContent='Copia testo';
+  document.getElementById('copy-btn').classList.remove('copied');
+  document.getElementById('export-overlay').classList.add('open');
+}
+function copyExport() {
+  const ta=document.getElementById('export-text');
+  navigator.clipboard.writeText(ta.value).then(()=>{
+    const btn=document.getElementById('copy-btn');
+    btn.textContent='✓ Copiato!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copia testo'; btn.classList.remove('copied'); },2000);
+  }).catch(()=>{ ta.select(); document.execCommand('copy'); });
+}
+function closeExport() { document.getElementById('export-overlay').classList.remove('open'); }
+function closeExportOnBg(e) { if(e.target===document.getElementById('export-overlay')) closeExport(); }
+
+/* ── HELPERS ─────────────────────────────────────────── */
+function percNum(p) {
+  if(p===null||p===undefined||p==='') return 0;
+  if(typeof p==='number') return Math.round(p*100);
+  return parseInt(String(p).replace('%',''))||0;
+}
+function percClass(n) { return n>=100?'100':n>=50?'mid':'low'; }
+function sessBlock(label,date,isNext) {
+  if(date&&String(date).trim())
+    return `<div class="sess-pill done"><span class="sess-label">${label}</span><span class="sess-date">✓ ${String(date).split(' ')[0]}</span></div>`;
+  if(isNext)
+    return `<div class="sess-pill next"><span class="sess-label">${label}</span><span class="sess-date">→ prossima</span></div>`;
+  return `<div class="sess-pill todo"><span class="sess-label">${label}</span><span class="sess-date">—</span></div>`;
+}
+function getNextSessIdx(p) {
+  return [p.s1a1,p.s1a2,p.s1a3,p.s2a1,p.s2a2,p.s2a3].findIndex(s=>!s||!String(s).trim());
+}
+function sessDone(p) {
+  return [p.s1a1,p.s1a2,p.s1a3,p.s2a1,p.s2a2,p.s2a3].filter(s=>s&&String(s).trim()).length;
+}
+function renderTest(testStr,testAgg) {
+  if(!testStr||!String(testStr).trim()) return '';
+  const dateHtml=testAgg?`<span style="font-size:10px;color:var(--gm);margin-left:auto">${testAgg}</span>`:'';
+  return `<div class="test-section"><div class="test-label">🏁 Test fisico ${dateHtml}</div><div class="test-pills">${renderTestPills(testStr)}</div></div>`;
+}
+function renderTestPills(testStr) {
+  return String(testStr).split('|').map(s=>s.trim()).filter(Boolean).map(part=>{
+    const m=part.match(/^(T\d+):\s*(.+)$/);
+    if(!m) return `<span class="test-pill"><span class="tp-val">${part}</span></span>`;
+    const val=m[2].trim();
+    return `<span class="test-pill${val==='-'?' dash':''}"><span class="tp-lbl">${m[1]}</span><span class="tp-val">${val}</span></span>`;
+  }).join('');
+}
+function hasNotes(p) {
+  return [p.nS1a1,p.nS1a2,p.nS1a3,p.nS2a1,p.nS2a2,p.nS2a3].some(n=>n&&String(n).trim());
+}
+function noteRow(label,text) {
+  if(!text||!String(text).trim()) return '';
+  return `<div class="note-row"><div class="note-row-lbl">${label}</div><div class="note-row-text">${text}</div></div>`;
+}
+function toggleNotes(id) {
+  notesOpenState[id]=!notesOpenState[id];
+  const body=document.getElementById('nb-'+id), arrow=document.getElementById('na-'+id);
+  if(body)  body.classList.toggle('open',!!notesOpenState[id]);
+  if(arrow) arrow.textContent=notesOpenState[id]?'▲':'▾';
+}
+function avatarColor(name) {
+  let h=0; for(const c of (name||'')) h=(h*31+c.charCodeAt(0))&0xfffffff;
+  return AVATAR_COLORS[h%AVATAR_COLORS.length];
+}
+function initials(name) {
+  return ((name||'?').trim().split(/\s+/).map(w=>w[0]||'').join('').toUpperCase().slice(0,2))||'?';
+}
+function freshnessInfo(aggStr) {
+  if(!aggStr) return {cls:'stale',label:''};
+  try {
+    const clean=String(aggStr).replace(',','');
+    const [dp,tp]=clean.trim().split(' ');
+    const [d,m,y]=dp.split('/');
+    const [hh,mm]=(tp||'00:00').split(':');
+    const date=new Date(+y,+m-1,+d,+hh,+mm);
+    const mins=(Date.now()-date.getTime())/60000;
+    if(mins<60)   return {cls:'fresh', label:Math.round(mins)+' min fa'};
+    if(mins<1440) return {cls:'recent',label:Math.round(mins/60)+' h fa'};
+    return           {cls:'stale', label:Math.round(mins/1440)+' g fa'};
+  } catch { return {cls:'stale',label:String(aggStr)}; }
+}
+
+/* ── INIT ────────────────────────────────────────────── */
+initDark();
 buildPinPad();
 </script>
 </body>
