@@ -28,12 +28,13 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:var(--bg); 
 .login-card { background:var(--wh); border-radius:20px; padding:36px 32px 28px; width:100%; max-width:340px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.25); }
 .login-logo { width:64px; height:64px; border-radius:16px; background:var(--g); color:white; font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:700; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
 .login-card h1 { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:700; color:var(--g); margin-bottom:4px; }
-.login-card > p { font-size:13px; color:var(--gm); margin-bottom:24px; }
+.login-sub  { font-size:13px; color:var(--gm); margin-bottom:24px; }
+.login-hint { font-size:11px; color:#aaa; margin-top:10px; }
 .pin-dots { display:flex; gap:12px; justify-content:center; margin-bottom:24px; }
 .pin-dots span { width:14px; height:14px; border-radius:50%; border:2px solid var(--g); background:transparent; transition:background .15s; }
 .pin-dots span.filled { background:var(--g); }
 .pin-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px; }
-.pin-btn { height:54px; border:1.5px solid #e0e0e0; border-radius:10px; background:var(--wh); font-size:22px; font-weight:500; cursor:pointer; transition:background .1s,transform .1s; display:flex; align-items:center; justify-content:center; color:var(--dk); }
+.pin-btn { height:54px; border:1.5px solid #e0e0e0; border-radius:10px; background:#fff; font-size:22px; font-weight:500; cursor:pointer; transition:background .1s,transform .1s; display:flex; align-items:center; justify-content:center; color:#111; }
 .pin-btn:active { background:var(--gr); transform:scale(.95); }
 .pin-btn.del   { font-size:18px; color:var(--gm); }
 .pin-btn.empty { pointer-events:none; border-color:transparent; }
@@ -144,8 +145,20 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:var(--bg); 
 .group-hdr-name { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; color:var(--gd); flex:1; }
 .group-hdr-count { font-size:12px; font-weight:600; color:white; background:var(--g); border-radius:10px; padding:2px 9px; }
 .group-hdr-count.zero { background:#aaa; }
+.group-avg { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; padding:1px 10px; border-radius:10px; border:1.5px solid; }
+.group-avg.avg-100 { color:var(--g);   border-color:var(--gp); background:var(--gp); }
+.group-avg.avg-mid { color:#b35900; border-color:#ffe0b0; background:#fff3e0; }
+.group-avg.avg-low { color:#c0392b; border-color:#fdd;    background:#fff0f0; }
+.group-avg.avg-na  { color:var(--gm); border-color:var(--card-border); background:var(--gr); }
+[data-dark] .group-avg.avg-100 { background:#0a2015; border-color:#0a2015; }
+[data-dark] .group-avg.avg-mid { background:#2a1500; border-color:#2a1500; }
+[data-dark] .group-avg.avg-low { background:#2a0000; border-color:#2a0000; }
 .sec-arrow { font-size:13px; color:var(--gm); transition:transform .2s; }
 .sec-arrow.closed { transform:rotate(-90deg); }
+.prove-divider { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.prove-divider-line { flex:1; height:1px; background:repeating-linear-gradient(90deg,#ccc 0,#ccc 6px,transparent 6px,transparent 12px); }
+.prove-divider-label { font-size:11px; font-weight:700; color:var(--gm); white-space:nowrap; letter-spacing:.4px; text-transform:uppercase; }
+.prove-hdr { border-style:dashed; border-color:#bbb; opacity:.85; }
 .group-body.hidden { display:none; }
 
 /* ── GRID CARDS ───────────────────────────────────────── */
@@ -289,12 +302,26 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:var(--bg); 
   <div class="login-card">
     <div class="login-logo">GK</div>
     <h1>Dashboard Mister</h1>
-    <p>Inserisci il PIN per accedere</p>
+    <p class="login-sub">Inserisci il PIN per accedere</p>
     <div class="pin-dots" id="pin-dots">
       <span></span><span></span><span></span><span></span>
     </div>
-    <div class="pin-pad" id="pin-pad"></div>
+    <div class="pin-pad">
+      <button type="button" class="pin-btn" onclick="pinPress('1')">1</button>
+      <button type="button" class="pin-btn" onclick="pinPress('2')">2</button>
+      <button type="button" class="pin-btn" onclick="pinPress('3')">3</button>
+      <button type="button" class="pin-btn" onclick="pinPress('4')">4</button>
+      <button type="button" class="pin-btn" onclick="pinPress('5')">5</button>
+      <button type="button" class="pin-btn" onclick="pinPress('6')">6</button>
+      <button type="button" class="pin-btn" onclick="pinPress('7')">7</button>
+      <button type="button" class="pin-btn" onclick="pinPress('8')">8</button>
+      <button type="button" class="pin-btn" onclick="pinPress('9')">9</button>
+      <button type="button" class="pin-btn empty" disabled></button>
+      <button type="button" class="pin-btn" onclick="pinPress('0')">0</button>
+      <button type="button" class="pin-btn del" onclick="pinPress('⌫')">⌫</button>
+    </div>
     <p id="pin-error"></p>
+    <p class="login-hint">Puoi digitare anche da tastiera</p>
   </div>
 </div>
 
@@ -404,7 +431,7 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:var(--bg); 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8hdQW2oQ6r_UjDzTgGwT6MIzHl1AZv-z17-hpyBI-CKcDiwOK-RO0GDX73Cx3S8GQ/exec';
 const PINS   = { '2003':'Andrea', '1990':'Alessio' };
-const GROUPS = ['Prove','2012','2011','2010','Altri'];
+const GROUPS = ['2012','2011','2010','Altri']; // 'Prove' è separato
 const AVATAR_COLORS = ['#1a7a3c','#2980b9','#8e44ad','#e67e22','#c0392b','#16a085','#d35400','#34495e'];
 const AUTO_MIN = 5;
 
@@ -438,14 +465,15 @@ function initDark() {
 
 /* ── PIN ─────────────────────────────────────────────── */
 function buildPinPad() {
-  const pad = document.getElementById('pin-pad');
-  ['1','2','3','4','5','6','7','8','9','','0','⌫'].forEach(k => {
-    const b = document.createElement('button');
-    b.className = 'pin-btn'+(k===''?' empty':'')+(k==='⌫'?' del':'');
-    b.textContent = k;
-    if (k!=='') b.addEventListener('click',()=>pinPress(k));
-    pad.appendChild(b);
-  });
+  // Bottoni già in HTML — solo listener tastiera
+  document.addEventListener('keydown', onKeyDown);
+}
+function onKeyDown(e) {
+  // Ignora se il dashboard è aperto
+  if(document.getElementById('dashboard').style.display==='block') return;
+  if(e.key>='0'&&e.key<='9') pinPress(e.key);
+  else if(e.key==='Backspace'||e.key==='Delete') pinPress('⌫');
+  else if(e.key==='Escape') { pinEntry=''; updateDots(); }
 }
 function pinPress(k) {
   document.getElementById('pin-error').textContent='';
@@ -589,9 +617,10 @@ function loadData(silent=false) {
 
 /* ── STATS ───────────────────────────────────────────── */
 function updateStats(players) {
-  const tot=players.length;
-  const done=players.filter(p=>percNum(p.perc)>=100).length;
-  const avg=tot?Math.round(players.reduce((s,p)=>s+percNum(p.perc),0)/tot):0;
+  const active=players.filter(p=>groupMap[p.nome]!=='Prove');
+  const tot=active.length;
+  const done=active.filter(p=>percNum(p.perc)>=100).length;
+  const avg=tot?Math.round(active.reduce((s,p)=>s+percNum(p.perc),0)/tot):0;
   document.getElementById('stat-tot').textContent=tot;
   document.getElementById('stat-done').textContent=done+'/'+tot;
   document.getElementById('stat-avg').textContent=avg+'%';
@@ -599,16 +628,17 @@ function updateStats(players) {
 
 /* ── DISTRIBUZIONE ───────────────────────────────────── */
 function updateDistrib(players) {
-  if(!players.length){ document.getElementById('distrib-wrap').style.display='none'; return; }
+  const active=players.filter(p=>groupMap[p.nome]!=='Prove');
+  if(!active.length){ document.getElementById('distrib-wrap').style.display='none'; return; }
   const buckets=[0,0,0,0]; // 0-25, 25-50, 50-99, 100
-  players.forEach(p=>{
+  active.forEach(p=>{
     const n=percNum(p.perc);
     if(n>=100) buckets[3]++;
     else if(n>=50) buckets[2]++;
     else if(n>=25) buckets[1]++;
     else buckets[0]++;
   });
-  const total=players.length;
+  const total=active.length;
   const colors=['d0','d25','d50','d100'];
   const labels=['0–24%','25–49%','50–99%','100%'];
   const barColors=['#e74c3c','#f0a500','#3498db','#26a653'];
@@ -689,14 +719,55 @@ function renderByGroups(players) {
     container.innerHTML='<div class="empty-state"><div class="big">📋</div><p>Nessun portiere corrisponde al filtro.</p></div>';
     return;
   }
+  // Separa Prove dagli altri
+  const prove=players.filter(p=>groupMap[p.nome]==='Prove');
+  const rest=players.filter(p=>groupMap[p.nome]!=='Prove');
+  if(!rest.length && !prove.length){
+    container.innerHTML='<div class="empty-state"><div class="big">📋</div><p>Nessun portiere corrisponde al filtro.</p></div>';
+    return;
+  }
   const buckets={};
   GROUPS.forEach(g=>buckets[g]=[]);
   buckets['__none__']=[];
-  players.forEach(p=>{ const g=groupMap[p.nome]; if(g&&buckets[g]) buckets[g].push(p); else buckets['__none__'].push(p); });
+  rest.forEach(p=>{ const g=groupMap[p.nome]; if(g&&buckets[g]) buckets[g].push(p); else buckets['__none__'].push(p); });
   container.innerHTML='';
   GROUPS.forEach((g,i)=>container.appendChild(makeSection(g,buckets[g],i,false)));
   container.appendChild(makeSection('Non assegnati',buckets['__none__'],GROUPS.length,true));
+  // Sezione Prove in fondo, visivamente separata
+  if(prove.length) container.appendChild(makeProveSection(prove));
 }
+function makeProveSection(members) {
+  const isClosed=!!sectionClosed['sec-prove'];
+  const sec=document.createElement('div');
+  sec.className='group-section';
+  sec.style.cssText='margin-top:28px;';
+  sec.innerHTML=`
+    <div class="prove-divider">
+      <span class="prove-divider-line"></span>
+      <span class="prove-divider-label">🧪 In prova — non conteggiati</span>
+      <span class="prove-divider-line"></span>
+    </div>
+    <div class="group-hdr prove-hdr" onclick="toggleSection('sec-prove','prove-body','prove-arrow')">
+      <span class="group-hdr-icon">🧪</span>
+      <span class="group-hdr-name">Prove</span>
+      <span class="group-hdr-count">${members.length}</span>
+      <span class="sec-arrow ${isClosed?'closed':''}" id="prove-arrow">▴</span>
+    </div>
+    <div class="group-body ${isClosed?'hidden':''}" id="prove-body"></div>`;
+  const grid=document.createElement('div');
+  grid.className='players-grid';
+  members.forEach((p,i)=>grid.appendChild(makeCard(p,8000+i)));
+  sec.querySelector('.group-body').appendChild(grid);
+  return sec;
+}
+
+function groupAvgBadge(members) {
+  if(!members.length) return '<span class="group-avg avg-na">—</span>';
+  const avg=Math.round(members.reduce((s,p)=>s+percNum(p.perc),0)/members.length);
+  const cls=avg>=100?'avg-100':avg>=50?'avg-mid':'avg-low';
+  return `<span class="group-avg ${cls}">${avg}%</span>`;
+}
+
 function makeSection(name,members,idx,isUnassigned) {
   const secId='sec-'+idx, bodyId='sec-body-'+idx, arrowId='sec-arrow-'+idx;
   const isClosed=!!sectionClosed[secId];
@@ -708,6 +779,7 @@ function makeSection(name,members,idx,isUnassigned) {
       <span class="group-hdr-icon">${icon}</span>
       <span class="group-hdr-name">${name}</span>
       <span class="group-hdr-count ${members.length===0?'zero':''}">${members.length}</span>
+      ${groupAvgBadge(members)}
       <span class="sec-arrow ${isClosed?'closed':''}" id="${arrowId}">▴</span>
     </div>
     <div class="group-body ${isClosed?'hidden':''}" id="${bodyId}">
@@ -780,6 +852,7 @@ function makeCard(p,uid) {
       <label>📁</label>
       <select class="group-sel" data-nome="${safeN}" onchange="setPlayerGroup(this)">
         <option value="" ${curGrp===''?'selected':''}>— non assegnato —</option>
+        <option value="Prove" ${curGrp==='Prove'?'selected':''}>🧪 Prove</option>
         ${GROUPS.map(g=>`<option value="${g}" ${curGrp===g?'selected':''}>${g}</option>`).join('')}
       </select>
     </div>`;
@@ -838,58 +911,57 @@ function openModal(nome) {
   document.getElementById('modal-overlay').classList.add('open');
 }
 function exportPlayer() {
-  const p=modalPlayer;
-  if(!p) return;
-  const pn=percNum(p.perc);
-  const sessions=[['S1·A1',p.s1a1],['S1·A2',p.s1a2],['S1·A3',p.s1a3],['S2·A1',p.s2a1],['S2·A2',p.s2a2],['S2·A3',p.s2a3]];
-  const done=sessions.filter(([,d])=>d&&String(d).trim()).length;
-  const lines=[];
-  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━');
-  lines.push(`👤 ${p.nome}`);
-  if(groupMap[p.nome]) lines.push(`📁 Gruppo: ${groupMap[p.nome]}`);
-  lines.push(`📊 Progresso: ${pn}%`);
-  lines.push(`✅ Sessioni completate: ${done}/6`);
+  var p = modalPlayer;
+  if (!p) return;
+  var pn   = percNum(p.perc);
+  var sess = [['S1·A1',p.s1a1],['S1·A2',p.s1a2],['S1·A3',p.s1a3],
+              ['S2·A1',p.s2a1],['S2·A2',p.s2a2],['S2·A3',p.s2a3]];
+  var done = sess.filter(function(x){ return x[1]&&String(x[1]).trim(); }).length;
+  var sep  = '━━━━━━━━━━━━━━━━━━━━━━━━';
+  var lines = [];
+  lines.push(sep);
+  lines.push('👤 ' + p.nome);
+  if (groupMap[p.nome]) lines.push('📁 Gruppo: ' + groupMap[p.nome]);
+  lines.push('📊 Progresso: ' + pn + '%');
+  lines.push('✅ Sessioni completate: ' + done + '/6');
   lines.push('');
   lines.push('📅 Sessioni:');
-  sessions.forEach(([lbl,dt])=>{
-    lines.push(`  ${dt&&String(dt).trim()?'✓':'○'} ${lbl}: ${dt&&String(dt).trim()?String(dt):'—'}`);
+  sess.forEach(function(item) {
+    var lbl=item[0], dt=item[1], ok=dt&&String(dt).trim();
+    lines.push('  '+(ok?'✓':'○')+' '+lbl+': '+(ok?String(dt):'—'));
   });
-  if(p.test){
+  if (p.test) {
     lines.push('');
-    lines.push('🏁 Test fisico'+(p.testAgg?' ('+p.testAgg+')':'')+':
-  '+p.test.split('|').map(s=>s.trim()).join('
-  '));
+    lines.push('🏁 Test fisico'+(p.testAgg?' ('+p.testAgg+')':'')+':');
+    p.test.split('|').forEach(function(s){ lines.push('  '+s.trim()); });
   }
-  const playerNotes=[[' S1·A1',p.nS1a1],['S1·A2',p.nS1a2],['S1·A3',p.nS1a3],['S2·A1',p.nS2a1],['S2·A2',p.nS2a2],['S2·A3',p.nS2a3]].filter(([,n])=>n&&String(n).trim());
-  if(playerNotes.length){
+  var pnotes=[['S1·A1',p.nS1a1],['S1·A2',p.nS1a2],['S1·A3',p.nS1a3],
+              ['S2·A1',p.nS2a1],['S2·A2',p.nS2a2],['S2·A3',p.nS2a3]]
+    .filter(function(x){ return x[1]&&String(x[1]).trim(); });
+  if (pnotes.length) {
     lines.push('');
     lines.push('📝 Note portiere:');
-    playerNotes.forEach(([lbl,n])=>lines.push(`  ${lbl}: ${n}`));
+    pnotes.forEach(function(x){ lines.push('  '+x[0]+': '+x[1]); });
   }
-  const mn=misterNotes[p.nome];
-  if(mn&&mn.trim()){
+  var mn = misterNotes[p.nome];
+  if (mn&&mn.trim()) {
     lines.push('');
     lines.push('📋 Note Mister:');
-    lines.push('  '+mn.trim().replace(/
-/g,'
-  '));
+    mn.trim().split('\n').forEach(function(l){ lines.push('  '+l); });
   }
-  if(p.agg) lines.push('');
-  if(p.agg) lines.push(`🕐 Ultimo aggiornamento: ${p.agg}`);
-  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━');
-  const text=lines.join('
-');
-  const btn=document.getElementById('player-export-btn');
-  navigator.clipboard.writeText(text).then(()=>{
+  if (p.agg) { lines.push(''); lines.push('🕐 Agg: '+p.agg); }
+  lines.push(sep);
+  var text = lines.join('\n');
+  var btn  = document.getElementById('player-export-btn');
+  navigator.clipboard.writeText(text).then(function() {
     btn.textContent='✓ Copiato!'; btn.classList.add('copied');
-    setTimeout(()=>{ btn.innerHTML='📤 Esporta scheda'; btn.classList.remove('copied'); },2000);
-  }).catch(()=>{
-    // fallback
-    const ta=document.createElement('textarea');
+    setTimeout(function(){ btn.innerHTML='📤 Esporta scheda'; btn.classList.remove('copied'); },2000);
+  }).catch(function() {
+    var ta=document.createElement('textarea');
     ta.value=text; document.body.appendChild(ta); ta.select();
     document.execCommand('copy'); document.body.removeChild(ta);
     btn.textContent='✓ Copiato!';
-    setTimeout(()=>{ btn.innerHTML='📤 Esporta scheda'; },2000);
+    setTimeout(function(){ btn.innerHTML='📤 Esporta scheda'; },2000);
   });
 }
 
