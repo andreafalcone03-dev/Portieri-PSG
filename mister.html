@@ -282,8 +282,11 @@ html,body { height:100%; font-family:'Barlow',sans-serif; background:#f0f4f1; co
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIQ_gHDsOEnBLFYysanLaVwHBcauXaCR347X2S5cwEO8idn-gX6X7K61Tphax8NO0E/exec';
-const PIN_CORRECT = '1414'; // ← cambiate questo PIN
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGmmpJBE-EeFZ1rJRkidK-Jv3CPvV2rfPj-JiTnb9UePIFckP0avJNW-0i7uWRj932/exec';
+const PINS = {
+  '2003': 'Andrea',
+  '1990': 'Alessio'
+};
 
 // ── PIN ──────────────────────────────────────────────────
 let pinEntry = '';
@@ -319,9 +322,12 @@ function updateDots() {
 }
 
 function checkPin() {
-  if (pinEntry === PIN_CORRECT) {
+  const misterName = PINS[pinEntry];
+  if (misterName) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
+    // Aggiorna saluto nella nav
+    document.querySelector('.dash-nav h1').textContent = '👋 Ciao Mister ' + misterName + '!';
     loadData();
   } else {
     document.getElementById('pin-error').textContent = '⚠️ PIN errato, riprova';
