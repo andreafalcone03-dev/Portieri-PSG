@@ -372,17 +372,23 @@ function loadData() {
   window._misterCb = function(json) {
     clearTimeout(timer);
     if (json && json.ok) {
-      renderDashboard(json.players, json.ts);
+      try {
+        renderDashboard(json.players, json.ts);
+      } catch(err) {
+        document.getElementById('players-container').innerHTML =
+          `<div class="empty-state"><div class="big">❌</div>
+           <p><b>Errore rendering:</b><br><code>${err.message}</code></p></div>`;
+      }
     } else {
       document.getElementById('players-container').innerHTML =
         '<div class="empty-state"><div class="big">⚠️</div><p>Dati non validi ricevuti.</p></div>';
     }
   };
 
-  // Carica via tag <script> — aggira CORS
+  // Carica via tag <script> — aggira CORS (cache-buster per evitare risposte vecchie)
   const script = document.createElement('script');
   script.id = 'jsonp-script';
-  script.src = SCRIPT_URL + '?callback=_misterCb';
+  script.src = SCRIPT_URL + '?callback=_misterCb&t=' + Date.now();
   script.onerror = () => {
     clearTimeout(timer);
     document.getElementById('players-container').innerHTML =
@@ -422,11 +428,11 @@ function sessBlock(label, date) {
 }
 
 function hasNotes(p) {
-  return [p.nS1a1,p.nS1a2,p.nS1a3,p.nS2a1,p.nS2a2,p.nS2a3].some(n=>n.trim());
+  return [p.nS1a1,p.nS1a2,p.nS1a3,p.nS2a1,p.nS2a2,p.nS2a3].some(n => n && String(n).trim());
 }
 
 function noteRow(label, text) {
-  if (!text || !text.trim()) return '';
+  if (!text || !String(text).trim()) return '';
   return `<div class="note-row">
     <div class="note-row-lbl">${label}</div>
     <div class="note-row-text">${text}</div>
